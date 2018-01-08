@@ -4,16 +4,37 @@ const game = new Phaser.Game(
     'game-container',
     { preload: preload, create: create });
 
+function load_image(img, ext = 'png') {
+    game.load.image(img, `images/${img}.${ext}`);
+}
 
 function preload() {
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.align(true, true);
     game.scale.refresh();
 
-    game.load.image('bg-white', 'images/bg-light.png');
+    load_image('bg-dark', 'jpg');
+    load_image('bg-light');
+
+    load_image('lyse_kasser');
+    load_image('lyse_knapper');
+    load_image('lyse_kurver');
+    load_image('lyse_luer');
+    load_image('lyse_penner');
+    load_image('lyse_ringer');
+
+    load_image('morke_kasser');
+    load_image('morke_knapper');
+    load_image('morke_kurver');
+    load_image('morke_luer');
+    load_image('morke_penner');
+    load_image('morke_ringer');
+
+    game.state.add('menu', menu_state);
+    game.state.add('game', game_state);
 }
 
 function create() {
-    game.add.image(0, 0, 'bg-white');
+    game.state.start('game');
 }
 
