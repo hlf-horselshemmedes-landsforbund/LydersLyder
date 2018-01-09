@@ -1,6 +1,6 @@
 const game = new Phaser.Game(
     1920, 1080,
-    Phaser.AUTO,
+    Phaser.CANVAS,
     'game-container',
     { preload: preload, create: create });
 
