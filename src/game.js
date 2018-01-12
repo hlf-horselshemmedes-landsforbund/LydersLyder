@@ -54,23 +54,18 @@ const game_state = {
     }
 };
 
-function on_sprite_click(sprite) {
+function on_sprite_click(circle) {
     // TODO(istarnion): If correct -> Tween clicked circle to center, scale to 1, then play animation
 
     // If not correct:
     if(true) {
-        for(const name in sprites) {
-            if(sprites.hasOwnProperty(name)) {
-                const circle = sprites[name];
-                circle.tween.pause();
+        circle.tween.pause();
 
-                circle.sprite.angle = 20;
-                const shake = game.add.tween(circle.sprite)
-                    .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
+        circle.sprite.angle = 20;
+        const shake = game.add.tween(circle.sprite)
+            .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
 
-                shake.onComplete.add(() => { circle.tween.resume(); });
-            }
-        }
+        shake.onComplete.add(() => { circle.tween.resume(); });
     }
 }
 
