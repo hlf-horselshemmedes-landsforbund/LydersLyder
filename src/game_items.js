@@ -3,7 +3,9 @@ const game_items = [
         id: 0,
         name: "Lyse penner",
         ring: "circle-01",
-        image: "lyse_knapper"
+        image: "lyse_knapper",
+        animation1: new Animation("Animasjon_10/Frames-10-1/animspa-101-")
+            .range(1, 15)
     },
     {
         id: 1,

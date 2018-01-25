@@ -2,6 +2,9 @@ let playing_animation = false;
 
 function GameItem(group, def, col, row) {
     this.id = def.id;
+    this.name = def.name;
+    this.animation1 = def.animation1;
+    this.animation2 = def.animation2;
 
     this.circle = group.create(0, 0, def.ring);
     this.sprite = group.create(0, 0, def.image);
@@ -61,12 +64,26 @@ const game_state = {
             sprites[game_item.name] = new GameItem(this.group, game_item, (i % 4)+1, Math.floor(i / 4)+1);
             ++i;
         }
-
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
     }
 };
+
+function start_animation(circle) {
+    // Play animation
+    const test = game.add.group(null, 'Animation', true);
+    const sprite = test.create(0, 0, "Animasjon_1/Frames-1-1/animspa-11-1");
+
+    sprite.alpha = 0;
+    game.add.tween(sprite)
+        .to({ alpha: 1 }, 250, 'Linear', true);
+
+    window.setTimeout(() => {
+        on_animation_end(circle);
+        test.destroy();
+    }, 3250);
+}
 
 function on_animation_end(circle) {
     circle.reset();
@@ -77,17 +94,17 @@ function on_sprite_click(circle) {
     if(playing_animation) return;
 
     if(true) {
-    // TODO(istarnion): If correct -> Tween clicked circle to center, scale to 1, then play animation
         playing_animation = true;
         circle.circle.z = 100;
         const center = game.add.tween(circle.circle)
             .to({ x: 1920/2, y: 1080/2 }, 500, 'Linear', true);
+
         const fade = game.add.tween(circle.sprite)
             .to({ alpha: 0 }, 250, 'Linear', true);
-        const enlarge = game.add.tween(circle.circle.scale)
-            .to({ x: 12, y: 12 }, 500, 'Linear', true);
 
-        window.setTimeout(() => { on_animation_end(circle); }, 3000);
+        const enlarge = game.add.tween(circle.circle.scale)
+            .to({ x: 12, y: 12 }, 500, 'Linear', true)
+            .onComplete.add(() => { start_animation(circle); });
     }
     else {
         circle.sprite.angle = 20;

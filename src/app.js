@@ -33,6 +33,11 @@ function preload() {
     load_image('morke_penner');
     load_image('morke_ringer');
 
+    for(let i=0; i<11; ++i) {
+        const name = `Animasjon_1/Frames-1-1/animspa-11-${i+1}`;
+        load_image(name, 'jpg');
+    }
+
     game.state.add('menu', menu_state);
     game.state.add('game', game_state);
 }
