@@ -13,8 +13,11 @@ function preload() {
     game.scale.align(true, true);
     game.scale.refresh();
 
-    load_image('bg-dark', 'jpg');
     load_image('bg-light');
+
+    load_image('circle-01');
+    load_image('circle-02');
+    load_image('circle-03');
 
     load_image('lyse_kasser');
     load_image('lyse_knapper');
