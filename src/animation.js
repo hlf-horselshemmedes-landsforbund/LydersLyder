@@ -6,7 +6,7 @@ function Animation(prefix, frame_time = 100)
 }
 
 Animation.prototype.get_frame = function(i) {
-    return `${this.prefix}${this.frames[i]}.jpg`;
+    return `${this.prefix}${this.frames[i]}`;
 }
 
 Animation.prototype.get_num_frames = function() {
@@ -33,7 +33,7 @@ Animation.prototype.loop = function() {
 }
 
 Animation.prototype.range = function(start, end) {
-    for(let i=0; i<(end+1); ++i) {
+    for(let i=start; i<(end+1); ++i) {
         this.frames.push(i);
     }
 

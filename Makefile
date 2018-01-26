@@ -1,7 +1,7 @@
 TOOL = uglifyjs
 OUTPUDIR = dist
 OUTPUT = spa.js
-SOURCES = src/phaser.js src/menu.js src/animation.js src/game_items.js src/game.js src/end.js src/app.js
+SOURCES = src/phaser.js src/animation.js src/animator.js src/menu.js src/game_items.js src/game.js src/end.js src/app.js
 OPTIONS =
 
 PHONY: build

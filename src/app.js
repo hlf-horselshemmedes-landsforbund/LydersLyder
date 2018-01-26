@@ -33,9 +33,20 @@ function preload() {
     load_image('morke_penner');
     load_image('morke_ringer');
 
-    for(let i=0; i<11; ++i) {
-        const name = `Animasjon_1/Frames-1-1/animspa-11-${i+1}`;
-        load_image(name, 'jpg');
+    const loaded_anim_frames = [];
+    for(const game_item of game_items) {
+        if(game_item.hasOwnProperty("animation1")) {
+            const anim = game_item.animation1;
+
+            for(let i=0; i<anim.get_num_frames(); ++i) {
+                const name = anim.get_frame(i);
+
+                if(loaded_anim_frames.indexOf(name) === -1) {
+                    loaded_anim_frames.push(name);
+                    load_image(name, 'jpg');
+                }
+            }
+        }
     }
 
     game.state.add('menu', menu_state);

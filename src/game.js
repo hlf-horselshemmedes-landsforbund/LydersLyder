@@ -1,4 +1,5 @@
 let playing_animation = false;
+let animator = null;
 
 function GameItem(group, def, col, row) {
     this.id = def.id;
@@ -29,6 +30,7 @@ function GameItem(group, def, col, row) {
     this.circle.events.onInputDown.add(() => {
         on_sprite_click(this);
     }, this);
+
 }
 
 GameItem.prototype.reset = function() {
@@ -64,25 +66,19 @@ const game_state = {
             sprites[game_item.name] = new GameItem(this.group, game_item, (i % 4)+1, Math.floor(i / 4)+1);
             ++i;
         }
+
+        animator = new Animator();
+        animator.on_complete = on_animation_end;
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
+        animator.update();
     }
 };
 
 function start_animation(circle) {
     // Play animation
-    const test = game.add.group(null, 'Animation', true);
-    const sprite = test.create(0, 0, "Animasjon_1/Frames-1-1/animspa-11-1");
-
-    sprite.alpha = 0;
-    game.add.tween(sprite)
-        .to({ alpha: 1 }, 250, 'Linear', true);
-
-    window.setTimeout(() => {
-        on_animation_end(circle);
-        test.destroy();
-    }, 3250);
+    animator.new_animation(circle, circle.animation1);
 }
 
 function on_animation_end(circle) {
