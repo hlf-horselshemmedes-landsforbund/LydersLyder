@@ -1,5 +1,7 @@
 let playing_animation = false;
 let animator = null;
+const sprites = {};
+const sequence = [];
 
 function GameItem(group, def, col, row) {
     this.id = def.id;
@@ -30,7 +32,6 @@ function GameItem(group, def, col, row) {
     this.circle.events.onInputDown.add(() => {
         on_sprite_click(this);
     }, this);
-
 }
 
 GameItem.prototype.reset = function() {
@@ -57,9 +58,6 @@ const game_state = {
     create: function() {
         game.add.image(0, 0, 'bg-light');
 
-        /* sprites is a global */
-        sprites = {};
-
         let i = 0;
         this.group = game.add.group(null, 'Game items', true);
         for(const game_item of game_items) {
@@ -69,10 +67,15 @@ const game_state = {
 
         animator = new Animator();
         animator.on_complete = on_animation_end;
+
+        game.add.sound('noise', 1, true);
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
         animator.update();
+    },
+    chooseNextWord: function() {
+
     }
 };
 

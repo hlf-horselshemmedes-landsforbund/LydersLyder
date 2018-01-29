@@ -13,7 +13,7 @@ Animation.prototype.get_num_frames = function() {
     return this.frames.length;
 }
 
-Animation.prototype.frames = function() {
+Animation.prototype.sequence = function() {
     Array.prototype.push.apply(this.frames, arguments);
 
     return this;

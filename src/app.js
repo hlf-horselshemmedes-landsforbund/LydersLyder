@@ -49,6 +49,8 @@ function preload() {
         }
     }
 
+    game.load.audio('noise', 'audio/Noise_1.wav');
+
     game.state.add('menu', menu_state);
     game.state.add('game', game_state);
 }
