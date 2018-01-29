@@ -8,6 +8,8 @@ function Animator() {
     this.current_frame_index = 0;
     this.time_on_current_frame = 0;
     this.on_complete = null;
+
+    this.current_volume = -1;
 }
 
 Animator.prototype.call_on_complete = function() {
@@ -52,6 +54,11 @@ Animator.prototype.update = function() {
 
             if(this.current_frame_index < this.animation.get_num_frames()) {
                 this.sprite.loadTexture(this.animation.get_frame(this.current_frame_index));
+                const vol = this.animation.noise_events[this.current_frame_index];
+                if(vol !== this.current_volume) {
+                    this.current_volume = vol;
+                    set_noise_volume(vol);
+                }
             }
             else {
                 this.animating = false;

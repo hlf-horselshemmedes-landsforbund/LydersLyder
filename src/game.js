@@ -75,7 +75,7 @@ const game_state = {
 
         this.current_word_index = -1;
         this.word_sequence = [
-            5, 11, 4, 0, 1, 6, 8, 10, 2, 7, 9, 3, 0, 10, 2
+            2, 6, 2, 6
         ];
 
         this.choose_next_word();
@@ -88,6 +88,7 @@ const game_state = {
         ++this.current_word_index;
 
         if(this.current_word_index >= this.word_sequence.length) {
+            this.noise.stop();
             game.state.start('end');
         }
         else {
@@ -99,12 +100,22 @@ const game_state = {
             window.setTimeout(() => {
                 // TODO(istarnion): Use proper volume here
                 game.add.sound(game_items[target_id].resource).play();
-            }, 2500);
+                window.setTimeout(() => {
+                    game.add.tween(this.noise)
+                        .to({ volume: 0 }, 100, 'Linear', true);
+                }, 1200);
+            }, 2250);
         }
     }
 };
 
+function set_noise_volume(vol) {
+    game.add.tween(game_state.noise)
+        .to({ volume: vol }, 50, 'Linear', true);
+}
+
 function start_animation(circle) {
+    game_state.noise.volume = 1;
     animator.new_animation(circle, circle.animation1);
 }
 
