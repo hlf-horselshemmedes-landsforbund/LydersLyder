@@ -71,7 +71,7 @@ const game_items = [
         image: "morke_kasser",
         animation1: new Animation("Animasjon_2/Frames-2-1/animspa-21-")
             .range(1, 24)
-            .loop(5, 24)
+            .loop(6, 24)
     },
     {
         id: 8,
