@@ -3,6 +3,8 @@ let animator = null;
 const sprites = {};
 const sequence = [];
 
+let target_id = null;
+
 function GameItem(group, def, col, row) {
     this.id = def.id;
     this.name = def.name;
@@ -10,7 +12,7 @@ function GameItem(group, def, col, row) {
     this.animation2 = def.animation2;
 
     this.circle = group.create(0, 0, def.ring);
-    this.sprite = group.create(0, 0, def.image);
+    this.sprite = group.create(0, 0, def.resource);
 
     this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
     this.circle.anchor.x = this.circle.anchor.y = 0.5;
@@ -68,31 +70,54 @@ const game_state = {
         animator = new Animator();
         animator.on_complete = on_animation_end;
 
-        game.add.sound('noise', 1, true);
+        this.noise = game.add.sound('noise', 1, true);
+        this.noise.play();
+
+        this.current_word_index = -1;
+        this.word_sequence = [
+            5, 11, 4, 0, 1, 6, 8, 10, 2, 7, 9, 3, 0, 10, 2
+        ];
+
+        this.choose_next_word();
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
         animator.update();
     },
-    chooseNextWord: function() {
+    choose_next_word: function() {
+        ++this.current_word_index;
 
+        if(this.current_word_index >= this.word_sequence.length) {
+            game.state.start('end');
+        }
+        else {
+            target_id = this.word_sequence[this.current_word_index];
+
+            this.noise.volume = 1;
+            this.noise.play();
+
+            window.setTimeout(() => {
+                // TODO(istarnion): Use proper volume here
+                game.add.sound(game_items[target_id].resource).play();
+            }, 2500);
+        }
     }
 };
 
 function start_animation(circle) {
-    // Play animation
     animator.new_animation(circle, circle.animation1);
 }
 
 function on_animation_end(circle) {
     circle.reset();
     playing_animation = false;
+    game_state.choose_next_word();
 }
 
 function on_sprite_click(circle) {
     if(playing_animation) return;
 
-    if(true) {
+    if(circle.id === target_id) {
         playing_animation = true;
         circle.circle.z = 100;
         const center = game.add.tween(circle.circle)
@@ -110,7 +135,12 @@ function on_sprite_click(circle) {
         const shake = game.add.tween(circle.sprite)
             .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
 
-        shake.onComplete.add(() => { circle.sprite.angle = 0; });
+        shake.onComplete.add(() => {
+            circle.sprite.angle = 0;
+            window.setTimeout(() => {
+                game_state.choose_next_word();
+            }, 500);
+        });
     }
 }
 

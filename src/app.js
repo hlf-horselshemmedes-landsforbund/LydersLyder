@@ -51,8 +51,22 @@ function preload() {
 
     game.load.audio('noise', 'audio/Noise_1.wav');
 
+    game.load.audio('lyse_kasser', 'audio/lyse_kasser.wav');
+    game.load.audio('lyse_knapper', 'audio/lyse_knapper.wav');
+    game.load.audio('lyse_kurver', 'audio/lyse_kurver.wav');
+    game.load.audio('lyse_luer', 'audio/lyse_luer.wav');
+    game.load.audio('lyse_penner', 'audio/lyse_penner.wav');
+    game.load.audio('lyse_ringer', 'audio/lyse_ringer.wav');
+    game.load.audio('morke_kasser', 'audio/morke_kasser.wav');
+    game.load.audio('morke_knapper', 'audio/morke_knapper.wav');
+    game.load.audio('morke_kurver', 'audio/morke_kurver.wav');
+    game.load.audio('morke_luer', 'audio/morke_luer.wav');
+    game.load.audio('morke_penner', 'audio/morke_penner.wav');
+    game.load.audio('morke_ringer', 'audio/morke_ringer.wav');
+
     game.state.add('menu', menu_state);
     game.state.add('game', game_state);
+    game.state.add('end', end_state);
 }
 
 function create() {
