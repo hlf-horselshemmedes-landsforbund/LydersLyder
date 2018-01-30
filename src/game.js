@@ -1,4 +1,5 @@
 const SEQUENCE_LENGTH = 15;
+let num_correct = 0;
 
 let playing_animation = false;
 let playing_sound = false;
@@ -59,8 +60,19 @@ GameItem.prototype.reset = function() {
     this.circle.scale.set(1);
 }
 
+function get_volume_from_SNR(snr) {
+    return 1.0 * Math.pow(10, snr / 20).toFixed(2);
+}
+
 const game_state = {
     create: function() {
+        num_correct = 0;
+
+        this.curr_SNR = 4;
+        this.step_SNR = 2;
+        this.min_SNR = -16;
+        this.max_SNR = 2;
+
         game.add.image(0, 0, 'bg-light');
 
         let i = 0;
@@ -73,7 +85,7 @@ const game_state = {
         animator = new Animator();
         animator.on_complete = on_animation_end;
 
-        this.noise = game.add.sound('noise', 1, true);
+        this.noise = audio_clips['noise'];
 
         this.current_word_index = -1;
 
@@ -82,12 +94,12 @@ const game_state = {
             this.word_sequence.push(i);
         }
 
+        this.word_sequence = shuffle_array(this.word_sequence);
+
         for(let i=0; i<(SEQUENCE_LENGTH - game_items.length); ++i) {
             const choice = Math.floor(Math.random() * game_items.length);
             this.word_sequence.push(choice);
         }
-
-        this.word_sequence = shuffle_array(this.word_sequence);
 
         this.choose_next_word();
     },
@@ -105,51 +117,55 @@ const game_state = {
         else {
             target_id = this.word_sequence[this.current_word_index];
 
-            playing_sound = true;
-            this.noise.volume = 0;
-            this.noise.play();
-            game.add.tween(this.noise)
-                .to({ volume: 1 }, 600, Phaser.Easing.Quintic.In, true);
+            playing_sound = true; this.noise.play();
+            this.noise.fade(0, 1, 1000);
 
             window.setTimeout(() => {
-                // TODO(istarnion): Use proper volume here
-                game.add.sound(game_items[target_id].resource).play();
+                console.log(this.curr_SNR);
+                const word_sound = audio_clips[game_items[target_id].resource];
+                word_sound.volume(get_volume_from_SNR(this.curr_SNR));
+                word_sound.play();
                 window.setTimeout(() => {
-                    game.add.tween(this.noise)
-                        .to({ volume: 0 }, 500, Phaser.Easing.Quadratic.Out, true);
+                    this.noise.fade(1, 0, 500);
                     playing_sound = false;
                 }, 1200);
-            }, 1500);
+            }, 1250);
         }
     }
 };
 
 function set_noise_volume(vol) {
-    game.add.tween(game_state.noise)
-        .to({ volume: vol }, 500, Phaser.Easing.Quintic.In, true);
+    const old_vol = game_state.noise.volume();
+    game_state.noise.fade(old_vol, vol, 500);
 }
 
 function start_animation(circle) {
-    game_state.noise.volume = 1;
+    game_state.noise.fade(0, 1, 750);
     animator.new_animation(circle, circle.animation1);
 }
 
 function on_animation_end(circle) {
     circle.reset();
 
-    game.add.tween(game_state.noise)
-        .to({ volume: 0 }, 500, Phaser.Easing.Quadratic.Out, true);
+    const old_vol = game_state.noise.volume();
+    game_state.noise.fade(old_vol, 0, 500);
 
     window.setTimeout(() => {
         playing_animation = false;
         game_state.choose_next_word();
-    }, 1000);
+    }, 1500);
 }
 
 function on_sprite_click(circle) {
     if(playing_animation || playing_sound) return;
 
     if(circle.id === target_id) {
+        ++num_correct;
+        game_state.curr_SNR -= game_state.step_SNR;
+        if(game_state.curr_SNR < game_state.min_SNR) {
+            game_state.curr_SNR = game_state.min_SNR;
+        }
+
         playing_animation = true;
         circle.circle.z = 100;
         const center = game.add.tween(circle.circle)
@@ -163,6 +179,11 @@ function on_sprite_click(circle) {
             .onComplete.add(() => { start_animation(circle); });
     }
     else {
+        game_state.curr_SNR += game_state.step_SNR;
+        if(game_state.curr_SNR > game_state.max_SNR) {
+            game_state.curr_SNR = game_state.max_SNR;
+        }
+
         circle.sprite.angle = 20;
         const shake = game.add.tween(circle.sprite)
             .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
@@ -171,7 +192,7 @@ function on_sprite_click(circle) {
             circle.sprite.angle = 0;
             window.setTimeout(() => {
                 game_state.choose_next_word();
-            }, 500);
+            }, 1000);
         });
     }
 }

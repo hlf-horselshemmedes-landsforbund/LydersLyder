@@ -4,8 +4,20 @@ const game = new Phaser.Game(
     'game-container',
     { preload: preload, create: create });
 
+const audio_clips = {};
+
 function load_image(img, ext = 'png') {
     game.load.image(img, `images/${img}.${ext}`);
+}
+
+function load_audio(name, file) {
+    const sound = new Howl({
+        src: [ file ],
+        autoplay: false,
+        loop: false
+    });
+
+    audio_clips[name] = sound;
 }
 
 function preload() {
@@ -49,20 +61,20 @@ function preload() {
         }
     }
 
-    game.load.audio('noise', 'audio/Noise_1.wav');
+    load_audio('noise', 'audio/Noise_1.wav');
 
-    game.load.audio('lyse_kasser', 'audio/lyse_kasser.wav');
-    game.load.audio('lyse_knapper', 'audio/lyse_knapper.wav');
-    game.load.audio('lyse_kurver', 'audio/lyse_kurver.wav');
-    game.load.audio('lyse_luer', 'audio/lyse_luer.wav');
-    game.load.audio('lyse_penner', 'audio/lyse_penner.wav');
-    game.load.audio('lyse_ringer', 'audio/lyse_ringer.wav');
-    game.load.audio('morke_kasser', 'audio/morke_kasser.wav');
-    game.load.audio('morke_knapper', 'audio/morke_knapper.wav');
-    game.load.audio('morke_kurver', 'audio/morke_kurver.wav');
-    game.load.audio('morke_luer', 'audio/morke_luer.wav');
-    game.load.audio('morke_penner', 'audio/morke_penner.wav');
-    game.load.audio('morke_ringer', 'audio/morke_ringer.wav');
+    load_audio('lyse_kasser', 'audio/lyse_kasser.wav');
+    load_audio('lyse_knapper', 'audio/lyse_knapper.wav');
+    load_audio('lyse_kurver', 'audio/lyse_kurver.wav');
+    load_audio('lyse_luer', 'audio/lyse_luer.wav');
+    load_audio('lyse_penner', 'audio/lyse_penner.wav');
+    load_audio('lyse_ringer', 'audio/lyse_ringer.wav');
+    load_audio('morke_kasser', 'audio/morke_kasser.wav');
+    load_audio('morke_knapper', 'audio/morke_knapper.wav');
+    load_audio('morke_kurver', 'audio/morke_kurver.wav');
+    load_audio('morke_luer', 'audio/morke_luer.wav');
+    load_audio('morke_penner', 'audio/morke_penner.wav');
+    load_audio('morke_ringer', 'audio/morke_ringer.wav');
 
     game.state.add('menu', menu_state);
     game.state.add('game', game_state);
