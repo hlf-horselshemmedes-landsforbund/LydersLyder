@@ -101,7 +101,7 @@ const game_items = [
         resource: "lyse_kasser",
         animation1: new Animation("Animasjon_1/Frames-1-1/animspa-11-")
             .range(1, 11)
-            .loop(5, 11)
+            .loop(7, 11)
     },
     {
         id: 11,

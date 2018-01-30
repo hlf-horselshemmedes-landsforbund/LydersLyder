@@ -1,4 +1,7 @@
+const SEQUENCE_LENGTH = 15;
+
 let playing_animation = false;
+let playing_sound = false;
 let animator = null;
 const sprites = {};
 const sequence = [];
@@ -71,12 +74,20 @@ const game_state = {
         animator.on_complete = on_animation_end;
 
         this.noise = game.add.sound('noise', 1, true);
-        this.noise.play();
 
         this.current_word_index = -1;
-        this.word_sequence = [
-            2, 6, 2, 6
-        ];
+
+        this.word_sequence = [];
+        for(let i=0; i<Math.min(SEQUENCE_LENGTH, game_items.length); ++i) {
+            this.word_sequence.push(i);
+        }
+
+        for(let i=0; i<(SEQUENCE_LENGTH - game_items.length); ++i) {
+            const choice = Math.floor(Math.random() * game_items.length);
+            this.word_sequence.push(choice);
+        }
+
+        this.word_sequence = shuffle_array(this.word_sequence);
 
         this.choose_next_word();
     },
@@ -94,24 +105,28 @@ const game_state = {
         else {
             target_id = this.word_sequence[this.current_word_index];
 
-            this.noise.volume = 1;
+            playing_sound = true;
+            this.noise.volume = 0;
             this.noise.play();
+            game.add.tween(this.noise)
+                .to({ volume: 1 }, 600, Phaser.Easing.Quintic.In, true);
 
             window.setTimeout(() => {
                 // TODO(istarnion): Use proper volume here
                 game.add.sound(game_items[target_id].resource).play();
                 window.setTimeout(() => {
                     game.add.tween(this.noise)
-                        .to({ volume: 0 }, 100, 'Linear', true);
+                        .to({ volume: 0 }, 500, Phaser.Easing.Quadratic.Out, true);
+                    playing_sound = false;
                 }, 1200);
-            }, 2250);
+            }, 1500);
         }
     }
 };
 
 function set_noise_volume(vol) {
     game.add.tween(game_state.noise)
-        .to({ volume: vol }, 50, 'Linear', true);
+        .to({ volume: vol }, 500, Phaser.Easing.Quintic.In, true);
 }
 
 function start_animation(circle) {
@@ -121,12 +136,18 @@ function start_animation(circle) {
 
 function on_animation_end(circle) {
     circle.reset();
-    playing_animation = false;
-    game_state.choose_next_word();
+
+    game.add.tween(game_state.noise)
+        .to({ volume: 0 }, 500, Phaser.Easing.Quadratic.Out, true);
+
+    window.setTimeout(() => {
+        playing_animation = false;
+        game_state.choose_next_word();
+    }, 1000);
 }
 
 function on_sprite_click(circle) {
-    if(playing_animation) return;
+    if(playing_animation || playing_sound) return;
 
     if(circle.id === target_id) {
         playing_animation = true;
