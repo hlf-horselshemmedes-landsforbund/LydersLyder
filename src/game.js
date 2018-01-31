@@ -43,14 +43,14 @@ function GameItem(group, def, col, row) {
 GameItem.prototype.reset = function() {
     let offset = 0;
     if((this.row & 1) === 0) {
-        offset = 240;
+        offset = 160;
     }
     else {
-        offset = 430;
+        offset = 287;
     }
 
-    this.sprite.position.x = offset + 400 * (this.col-1);
-    this.sprite.position.y = (this.row - 2) * 270 + 1080 / 2 - 90;
+    this.sprite.position.x = offset + 270 * (this.col-1);
+    this.sprite.position.y = (this.row - 2) * 180 + game.height / 2 - 50;
     this.sprite.z = 1;
 
     this.circle.position = this.sprite.position.clone();
@@ -74,22 +74,22 @@ const game_state = {
         this.max_SNR = 2;
 
         game.add.image(0, 0, 'bg-light');
-        game.add.image(1920 / 2 - 781 / 2, 1080 - 140, 'prog-bar-outline');
-        this.prog_bar = game.add.image(1920 / 2 - 781 / 2, 1080 - 140, 'prog-bar-fill');
-        this.prog_rect = new Phaser.Rectangle(0, 0, 781, 71);
+        game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
+        this.prog_bar = game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-fill');
+        this.prog_rect = new Phaser.Rectangle(0, 0, 515, 47);
 
         const prog_text_style = {
-            font: "bold 32px catbirdregular",
+            font: "bold 30px catbirdregular",
             fill: "#2D2D2D",
             boundsAlignH: "center",
             boundsAlignV: "middle"
         };
 
         this.prog_text = game.add.text(0, 0, `0 / ${SEQUENCE_LENGTH}`, prog_text_style);
-        this.prog_text.setTextBounds(1920 / 2 - 781 / 2, 1080 - 140, 781, 71);
+        this.prog_text.setTextBounds(game.width / 2 - 515 / 2, game.height - 100, 515, 47);
 
         let i = 0;
-        this.group = game.add.group(null, 'Game items');
+        this.group = game.add.group(null, 'Game items', true);
         for(const game_item of game_items) {
             sprites[game_item.name] = new GameItem(this.group, game_item, (i % 4)+1, Math.floor(i / 4)+1);
             ++i;
@@ -129,12 +129,14 @@ const game_state = {
         }
         else {
             this.prog_text.setText(`${this.current_word_index+1} / ${SEQUENCE_LENGTH}`);
-            this.prog_rect.width = 781 * ((this.current_word_index+1) / SEQUENCE_LENGTH);
+            this.prog_rect.width = 515 * ((this.current_word_index+1) / SEQUENCE_LENGTH);
             this.prog_bar.crop(this.prog_rect);
 
             target_id = this.word_sequence[this.current_word_index];
 
-            playing_sound = true; this.noise.play();
+            playing_animation = false;
+            playing_sound = true;
+            this.noise.play();
             this.noise.fade(0, 1, 1000);
 
             window.setTimeout(() => {
@@ -168,7 +170,6 @@ function on_animation_end(circle) {
     game_state.noise.fade(old_vol, 0, 500);
 
     window.setTimeout(() => {
-        playing_animation = false;
         game_state.choose_next_word();
     }, 1500);
 }
@@ -186,7 +187,7 @@ function on_sprite_click(circle) {
         playing_animation = true;
         circle.circle.z = 100;
         const center = game.add.tween(circle.circle)
-            .to({ x: 1920/2, y: 1080/2 }, 500, 'Linear', true);
+            .to({ x: game.width/2, y: game.height/2 }, 500, 'Linear', true);
 
         const fade = game.add.tween(circle.sprite)
             .to({ alpha: 0 }, 250, 'Linear', true);
@@ -201,6 +202,7 @@ function on_sprite_click(circle) {
             game_state.curr_SNR = game_state.max_SNR;
         }
 
+        playing_animation = true;
         circle.sprite.angle = 20;
         const shake = game.add.tween(circle.sprite)
             .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);

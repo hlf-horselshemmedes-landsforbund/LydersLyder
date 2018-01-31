@@ -2,7 +2,7 @@ var game = null;
 
 window.onload = () => {
     game = new Phaser.Game(
-        1920, 1080,
+        1280, 720,
         Phaser.CANVAS,
         'game-container',
         { preload: preload, create: create });
@@ -27,8 +27,8 @@ function load_audio(name, file) {
 const loading_state = {
     preload: function() {
         game.add.sprite(0, 0, 'bg-light-blank');
-        const load_bar_frame = game.add.sprite(game.world.centerX - 781 / 2, game.world.centerY - 71 / 2, 'prog-bar-outline');
-        const load_bar_fill = game.add.sprite(game.world.centerX - 781 / 2, game.world.centerY - 71 / 2, 'prog-bar-fill');
+        const load_bar_frame = game.add.sprite(game.world.centerX - 515 / 2, game.world.centerY - 47 / 2, 'prog-bar-outline');
+        const load_bar_fill = game.add.sprite(game.world.centerX - 515 / 2, game.world.centerY - 47 / 2, 'prog-bar-fill');
 
         game.load.setPreloadSprite(load_bar_fill);
 
