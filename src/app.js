@@ -1,8 +1,12 @@
-const game = new Phaser.Game(
-    1920, 1080,
-    Phaser.CANVAS,
-    'game-container',
-    { preload: preload, create: create });
+var game = null;
+
+window.onload = () => {
+    game = new Phaser.Game(
+        1920, 1080,
+        Phaser.CANVAS,
+        'game-container',
+        { preload: preload, create: create });
+};
 
 const audio_clips = {};
 
@@ -26,6 +30,14 @@ function preload() {
     game.scale.refresh();
 
     load_image('bg-light');
+    load_image('bg-light-blank');
+
+    load_image('logo-lyderslyder');
+    load_image('btn-start');
+    load_image('btn-reload');
+
+    load_image('prog-bar-outline');
+    load_image('prog-bar-fill');
 
     load_image('circle-01');
     load_image('circle-02');
@@ -82,6 +94,6 @@ function preload() {
 }
 
 function create() {
-    game.state.start('game');
+    game.state.start('menu');
 }
 

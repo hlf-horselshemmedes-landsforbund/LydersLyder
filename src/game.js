@@ -43,14 +43,14 @@ function GameItem(group, def, col, row) {
 GameItem.prototype.reset = function() {
     let offset = 0;
     if((this.row & 1) === 0) {
-        offset = 260;
+        offset = 240;
     }
     else {
-        offset = 450;
+        offset = 430;
     }
 
     this.sprite.position.x = offset + 400 * (this.col-1);
-    this.sprite.position.y = (this.row - 2) * 340 + 1080 / 2;
+    this.sprite.position.y = (this.row - 2) * 270 + 1080 / 2 - 90;
     this.sprite.z = 1;
 
     this.circle.position = this.sprite.position.clone();
@@ -74,6 +74,19 @@ const game_state = {
         this.max_SNR = 2;
 
         game.add.image(0, 0, 'bg-light');
+        game.add.image(1920 / 2 - 781 / 2, 1080 - 140, 'prog-bar-outline');
+        this.prog_bar = game.add.image(1920 / 2 - 781 / 2, 1080 - 140, 'prog-bar-fill');
+        this.prog_rect = new Phaser.Rectangle(0, 0, 781, 71);
+
+        const prog_text_style = {
+            font: "bold 32px catbirdregular",
+            fill: "#2D2D2D",
+            boundsAlignH: "center",
+            boundsAlignV: "middle"
+        };
+
+        this.prog_text = game.add.text(0, 0, `0 / ${SEQUENCE_LENGTH}`, prog_text_style);
+        this.prog_text.setTextBounds(1920 / 2 - 781 / 2, 1080 - 140, 781, 71);
 
         let i = 0;
         this.group = game.add.group(null, 'Game items', true);
@@ -115,13 +128,17 @@ const game_state = {
             game.state.start('end');
         }
         else {
+            this.prog_text.setText(`${this.current_word_index+1} / ${SEQUENCE_LENGTH}`);
+            this.prog_rect.width = 781 * ((this.current_word_index+1) / SEQUENCE_LENGTH);
+            this.prog_bar.crop(this.prog_rect);
+
             target_id = this.word_sequence[this.current_word_index];
 
             playing_sound = true; this.noise.play();
             this.noise.fade(0, 1, 1000);
 
             window.setTimeout(() => {
-                console.log(this.curr_SNR);
+                console.log(`${this.current_word_index+1}: Playing ${game_items[target_id].name}. Current SNR: ${this.curr_SNR}`);
                 const word_sound = audio_clips[game_items[target_id].resource];
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 word_sound.play();
