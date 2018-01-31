@@ -89,7 +89,7 @@ const game_state = {
         this.prog_text.setTextBounds(1920 / 2 - 781 / 2, 1080 - 140, 781, 71);
 
         let i = 0;
-        this.group = game.add.group(null, 'Game items', true);
+        this.group = game.add.group(null, 'Game items');
         for(const game_item of game_items) {
             sprites[game_item.name] = new GameItem(this.group, game_item, (i % 4)+1, Math.floor(i / 4)+1);
             ++i;
