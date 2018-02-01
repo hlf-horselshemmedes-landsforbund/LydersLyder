@@ -1,8 +1,9 @@
 const SEQUENCE_LENGTH = 15;
 let num_correct = 0;
+const TIME_BEFORE_TIMER = 8;    // In seconds
+const TIMER_DURATION = 8;       // in seconds.
 
-let playing_animation = false;
-let playing_sound = false;
+let waiting_for_choice = false;
 let animator = null;
 const sprites = {};
 const sequence = [];
@@ -71,7 +72,7 @@ const game_state = {
         this.curr_SNR = 4;
         this.step_SNR = 2;
         this.min_SNR = -16;
-        this.max_SNR = 2;
+        this.max_SNR = 6;
 
         game.add.image(0, 0, 'bg-light');
         game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
@@ -100,28 +101,67 @@ const game_state = {
 
         this.noise = audio_clips['noise'];
 
+        this.word_start_time = 0;
+        this.timer = {
+            graphics: game.add.graphics(),
+            x: 64,
+            y: game.height + 64,
+            fill: 0,
+            shown: false
+        };
+
         this.current_word_index = -1;
 
-        this.word_sequence = [];
-        for(let i=0; i<Math.min(SEQUENCE_LENGTH, game_items.length); ++i) {
-            this.word_sequence.push(i);
-        }
-
-        this.word_sequence = shuffle_array(this.word_sequence);
-
-        for(let i=0; i<(SEQUENCE_LENGTH - game_items.length); ++i) {
-            const choice = Math.floor(Math.random() * game_items.length);
-            this.word_sequence.push(choice);
-        }
+        this.word_sequence = generate_word_sequence();
 
         this.choose_next_word();
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
         animator.update();
+
+        if(waiting_for_choice) {
+            const time_passed = (performance.now() - this.word_start_time) / 1000.0;
+            if(time_passed >= (TIME_BEFORE_TIMER + TIMER_DURATION)) {
+                this.hide_timer();
+
+                this.curr_SNR += this.step_SNR;
+                if(this.curr_SNR > this.max_SNR) {
+                    this.curr_SNR = this.max_SNR;
+                }
+
+                // TODO(istarnion): Play transition
+
+                waiting_for_choice = false;
+                this.choose_next_word();
+            }
+            else if(time_passed > TIME_BEFORE_TIMER) {
+                if(!this.timer.shown) {
+                    game.add.tween(this.timer)
+                        .to({ y: game.height - 64 }, 500, Phaser.Easing.Elastic.Out, true);
+                    this.timer.shown = true;
+                }
+
+                this.timer.fill = (time_passed - TIME_BEFORE_TIMER) / TIMER_DURATION;
+                if(this.timer.fill > 1) this.timer.fill = 1;
+            }
+        }
+
+        this.timer.graphics.clear();
+        this.timer.graphics.beginFill(0x96CFD2);
+        this.timer.graphics.drawCircle(this.timer.x, this.timer.y, 68);
+        this.timer.graphics.endFill();
+        this.timer.graphics.beginFill(0xFFFFFF);
+        this.timer.graphics.arc(
+            this.timer.x, this.timer.y, 32,
+            Math.PI / -2,
+            Math.PI / -2 + (2*Math.PI * this.timer.fill),
+            true);
+        this.timer.graphics.endFill();
     },
     choose_next_word: function() {
         ++this.current_word_index;
+        this.hide_timer();
 
         if(this.current_word_index >= this.word_sequence.length) {
             this.noise.stop();
@@ -134,8 +174,6 @@ const game_state = {
 
             target_id = this.word_sequence[this.current_word_index];
 
-            playing_animation = false;
-            playing_sound = true;
             this.noise.play();
             this.noise.fade(0, 1, 1000);
 
@@ -144,12 +182,18 @@ const game_state = {
                 const word_sound = audio_clips[game_items[target_id].resource];
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 word_sound.play();
+                this.word_start_time = performance.now();
+                waiting_for_choice = true;
                 window.setTimeout(() => {
                     this.noise.fade(1, 0, 500);
-                    playing_sound = false;
                 }, 1200);
             }, 1250);
         }
+    },
+    hide_timer: function() {
+        game.add.tween(this.timer)
+            .to({ y: game.height + 64 }, 500, Phaser.Easing.Elastic.In, true);
+        this.timer.shown = false;
     }
 };
 
@@ -175,7 +219,8 @@ function on_animation_end(circle) {
 }
 
 function on_sprite_click(circle) {
-    if(playing_animation || playing_sound) return;
+    if(!waiting_for_choice) return;
+    waiting_for_choice = false;
 
     if(circle.id === target_id) {
         ++num_correct;
@@ -184,7 +229,6 @@ function on_sprite_click(circle) {
             game_state.curr_SNR = game_state.min_SNR;
         }
 
-        playing_animation = true;
         circle.circle.z = 100;
         const center = game.add.tween(circle.circle)
             .to({ x: game.width/2, y: game.height/2 }, 500, 'Linear', true);
@@ -202,10 +246,11 @@ function on_sprite_click(circle) {
             game_state.curr_SNR = game_state.max_SNR;
         }
 
-        playing_animation = true;
         circle.sprite.angle = 20;
         const shake = game.add.tween(circle.sprite)
             .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
+
+        // TODO(istarnion): Play transition
 
         shake.onComplete.add(() => {
             circle.sprite.angle = 0;
@@ -214,5 +259,23 @@ function on_sprite_click(circle) {
             }, 1000);
         });
     }
+}
+
+function generate_word_sequence() {
+    const word_sequence = [];
+
+    for(let i=0; i<Math.min(SEQUENCE_LENGTH, game_items.length); ++i) {
+        word_sequence.push(i);
+    }
+
+    shuffle_array(word_sequence);
+
+    const num_remaining = SEQUENCE_LENGTH - game_items.length;
+
+    for(let i=num_remaining-1; i>=0; --i) {
+        word_sequence.push(word_sequence[i]);
+    }
+
+    return word_sequence;
 }
 
