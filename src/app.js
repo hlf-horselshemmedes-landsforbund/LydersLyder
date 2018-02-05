@@ -34,6 +34,8 @@ const loading_state = {
 
         load_image('bg-light');
 
+        load_image('version_img');
+
         load_image('logo-lyderslyder');
         load_image('btn-start');
         load_image('btn-reload');
@@ -55,6 +57,12 @@ const loading_state = {
         load_image('morke_luer');
         load_image('morke_penner');
         load_image('morke_ringer');
+
+        for(let i=0; i<10; ++i) {
+            const filename = `images/transition/animspa-transition-${left_pad_string(i+1, 2)}.png`
+            const name = `transition-${i}`;
+            game.load.image(name, filename);
+        }
 
         const loaded_anim_frames = [];
         for(const game_item of game_items) {

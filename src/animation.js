@@ -2,7 +2,7 @@ function Animation(prefix, frame_time = 100)
 {
     this.prefix = prefix;
     this.frames = [];
-    this.noise_level_tracker = 1;
+    this.noise_level_tracker = 0.5;
     this.frame_time = frame_time;
     this.noise_events = [];
 }

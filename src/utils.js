@@ -9,3 +9,12 @@ function shuffle_array(arr) {
     }
 }
 
+function left_pad_string(str, wanted_length, symbol = '0') {
+    str = str.toString();
+    while(str.length < wanted_length) {
+        str = symbol + str;
+    }
+
+    return str;
+}
+
