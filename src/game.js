@@ -177,11 +177,11 @@ const game_state = {
 
             target_id = this.word_sequence[this.current_word_index];
 
-            this.noise.play();
+            //this.noise.play();
             this.noise.fade(0, 0.5, 1000);
 
             window.setTimeout(() => {
-                const word_sound = audio_clips[game_items[target_id].resource];
+                const word_sound = audio_clips['sine'/*game_items[target_id].resource*/];
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 console.log(`${this.current_word_index+1}: Playing ${game_items[target_id].name}. Current SNR: ${this.curr_SNR} (Real volume: ${word_sound.volume()})`);
                 word_sound.play();
