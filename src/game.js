@@ -1,6 +1,6 @@
 const INITIAL_SNR = 0;
 const STEP_SNR = 2;
-const MIN_SNR = -16;
+const MIN_SNR = -40;
 const MAX_SNR = 6;
 const SEQUENCE_LENGTH = 20;
 const TIME_BEFORE_TIMER = 8;    // In seconds
