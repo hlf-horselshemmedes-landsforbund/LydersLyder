@@ -12,7 +12,7 @@ const end_state = {
             boundsAlignV: "middle"
         };
 
-        text = game.add.text(0, 0, `${num_correct} / ${SEQUENCE_LENGTH}`, style);
+        text = game.add.text(0, 0, `${final_score.toFixed(2)}`, style);
         text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 
         text.setTextBounds(0, 0, game.width, game.height - 24);

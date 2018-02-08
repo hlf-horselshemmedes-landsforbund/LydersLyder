@@ -1,7 +1,13 @@
-const SEQUENCE_LENGTH = 15;
-let num_correct = 0;
+const INITIAL_SNR = 0;
+const STEP_SNR = 2;
+const MIN_SNR = -16;
+const MAX_SNR = 6;
+const SEQUENCE_LENGTH = 20;
 const TIME_BEFORE_TIMER = 8;    // In seconds
 const TIMER_DURATION = 8;       // in seconds.
+
+let num_correct = 0;
+let final_score = 0;
 
 let waiting_for_choice = false;
 let animator = null;
@@ -69,11 +75,9 @@ const game_state = {
     create: function() {
         num_correct = 0;
 
-        this.curr_SNR = 4;
-        this.step_SNR = 2;
-        this.min_SNR = -16;
-        this.max_SNR = 6;
+        this.curr_SNR = INITIAL_SNR;
         this.signal_base_SNR = 6; // Because we can not boost the audio files from the browser, we have made the signals be +6dB at vol = 1
+        this.played_SNRs = [];
 
         game.add.image(0, 0, 'bg-light');
         game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
@@ -166,8 +170,11 @@ const game_state = {
         ++this.current_word_index;
         this.hide_timer();
 
+        this.played_SNRs.push(this.curr_SNR);
+
         if(this.current_word_index >= this.word_sequence.length) {
             this.noise.stop();
+            final_score = calc_final_score();
             game.state.start('end');
         }
         else {
@@ -177,11 +184,11 @@ const game_state = {
 
             target_id = this.word_sequence[this.current_word_index];
 
-            //this.noise.play();
+            this.noise.play();
             this.noise.fade(0, 0.5, 1000);
 
             window.setTimeout(() => {
-                const word_sound = audio_clips['sine'/*game_items[target_id].resource*/];
+                const word_sound = audio_clips[game_items[target_id].resource];
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 console.log(`${this.current_word_index+1}: Playing ${game_items[target_id].name}. Current SNR: ${this.curr_SNR} (Real volume: ${word_sound.volume()})`);
                 word_sound.play();
@@ -199,6 +206,17 @@ const game_state = {
         this.timer.shown = false;
     }
 };
+
+function calc_final_score() {
+    let score = 0;
+    const num_SNRs_to_count = 11;
+    for(let i=game_state.played_SNRs.length-num_SNRs_to_count; i<game_state.played_SNRs.length; ++i) {
+        score += game_state.played_SNRs[i];
+    }
+
+    score /= num_SNRs_to_count;
+    return score;
+}
 
 function set_noise_volume(vol) {
     const old_vol = game_state.noise.volume();
@@ -224,9 +242,9 @@ function on_animation_end(circle) {
 function on_wrong_choice_or_timeout() {
     game_state.hide_timer();
 
-    game_state.curr_SNR += game_state.step_SNR;
-    if(game_state.curr_SNR > game_state.max_SNR) {
-        game_state.curr_SNR = game_state.max_SNR;
+    game_state.curr_SNR += STEP_SNR;
+    if(game_state.curr_SNR > MAX_SNR) {
+        game_state.curr_SNR = MAX_SNR;
     }
 
     game_state.transition_level = 0;
@@ -243,9 +261,9 @@ function on_sprite_click(circle) {
 
     if(circle.id === target_id) {
         ++num_correct;
-        game_state.curr_SNR -= game_state.step_SNR;
-        if(game_state.curr_SNR < game_state.min_SNR) {
-            game_state.curr_SNR = game_state.min_SNR;
+        game_state.curr_SNR -= STEP_SNR;
+        if(game_state.curr_SNR < MIN_SNR) {
+            game_state.curr_SNR = MIN_SNR;
         }
 
         circle.circle.z = 100;
