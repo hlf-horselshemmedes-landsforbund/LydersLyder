@@ -1,7 +1,5 @@
 const menu_state = {
     create: function() {
-        game.add.image(0, 0, 'bg-light-blank');
-
         game.add.image(game.world.centerX - 655 / 2, game.world.centerY - 333, 'logo-lyderslyder');
         game.add.image(game.world.centerX - 256 / 2, game.height - 192, 'version_img');
 

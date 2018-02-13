@@ -26,7 +26,6 @@ function load_audio(name, file) {
 
 const loading_state = {
     preload: function() {
-        game.add.sprite(0, 0, 'bg-light-blank');
         const load_bar_frame = game.add.sprite(game.world.centerX - 515 / 2, game.world.centerY - 47 / 2, 'prog-bar-outline');
         const load_bar_fill = game.add.sprite(game.world.centerX - 515 / 2, game.world.centerY - 47 / 2, 'prog-bar-fill');
 
@@ -110,7 +109,8 @@ function preload() {
     game.scale.align(true, true);
     game.scale.refresh();
 
-    load_image('bg-light-blank');
+    game.stage.backgroundColor = "#FFF";
+
     load_image('prog-bar-outline');
     load_image('prog-bar-fill');
 
