@@ -79,7 +79,7 @@ const game_state = {
         this.signal_base_SNR = 6; // Because we can not boost the audio files from the browser, we have made the signals be +6dB at vol = 1
         this.played_SNRs = [];
 
-        game.add.image(0, 0, 'bg-light');
+        //game.add.image(0, 0, 'bg-light');
         game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
         this.prog_bar = game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-fill');
         this.prog_rect = new Phaser.Rectangle(0, 0, 515, 47);

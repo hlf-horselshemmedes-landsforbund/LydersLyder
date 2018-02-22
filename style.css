@@ -33,13 +33,35 @@ body {
 #intro-info {
     position: absolute;
     top: 25%;
-    left: 10%;
-    width: 49%;
+    left: 7%;
+    width: 51%;
     height: 50%;
 }
 
 #intro-info > h1 {
     font-size: 1.5em;
+}
+
+#intro-info > label {
+    font-weight: bold;
+    display: inline-block;
+    width: 5em;
+}
+
+#intro-info > input[type=number] {
+    border: 3px solid black;
+    border-radius: 0;
+    font-size: 1em;
+    height: 2em;
+    margin-bottom: 1em;
+    appearance: none;
+}
+
+#intro-info > input[type=radio] {
+    border: 3px solid black;
+    height: 2em;
+    width: 2em;
+    color: pink;
 }
 
 #intro-btn-start {
@@ -54,10 +76,33 @@ body {
 #intro-vol-adjust {
     position: absolute;
     top: 25%;
-    right: 12.5%;
-    width: 25%;
+    right: 7%;
+    width: 30%;
     height: 50%;
     border: 3px solid black;
     border-radius: 5%;
+    padding: 1em;
+}
+
+#intro-vol-adjust > img {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#intro-vol-adjust > input {
+    display:none;
+}
+
+#intro-vol-adjust > input + label {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    background: url(images/sound-off.png);
+}
+
+#intro-vol-adjust > input:checked + label {
+    background: url(images/sound-on.png);
 }
 

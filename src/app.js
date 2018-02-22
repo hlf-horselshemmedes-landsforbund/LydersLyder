@@ -14,11 +14,11 @@ function load_image(img, ext = 'png') {
     game.load.image(img, `images/${img}.${ext}`);
 }
 
-function load_audio(name, file) {
+function load_audio(name, file, loop = false) {
     const sound = new Howl({
         src: [ file ],
         autoplay: false,
-        loop: false
+        loop: loop
     });
 
     audio_clips[name] = sound;
@@ -79,8 +79,7 @@ const loading_state = {
             }
         }
 
-        load_audio('noise', 'audio/Noise_1.wav');
-        load_audio('sine', 'audio/1kHz0dB.wav');
+        load_audio('noise', 'audio/Noise_1.wav', true);
 
         load_audio('lyse_kasser', 'audio/lyse_kasser.wav');
         load_audio('lyse_knapper', 'audio/lyse_knapper.wav');
