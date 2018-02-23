@@ -176,6 +176,7 @@ const game_state = {
 
             target_id = this.word_sequence[this.current_word_index];
 
+            this.noise.stop();
             this.noise.play();
             this.noise.fade(0, 0.5, 1000);
 

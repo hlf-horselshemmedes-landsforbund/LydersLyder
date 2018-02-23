@@ -109,7 +109,7 @@ const loading_state = {
         game.state.add('science', science_state);
     },
     create: function() {
-        game.state.start('end');
+        game.state.start('menu');
     }
 };
 
