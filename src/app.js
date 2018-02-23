@@ -38,6 +38,11 @@ const loading_state = {
         load_image('logo-lyderslyder');
         load_image('btn-start');
         load_image('btn-reload');
+        load_image('btn-results');
+        load_image('btn-science');
+        load_image('btn-back');
+
+        load_image('result-bar');
 
         load_image('circle-01');
         load_image('circle-02');
@@ -79,6 +84,8 @@ const loading_state = {
             }
         }
 
+        game.load.spritesheet('clap', 'images/clap/clap.png', 512, 512);
+
         load_audio('noise', 'audio/Noise_1.wav', true);
 
         load_audio('lyse_kasser', 'audio/lyse_kasser.wav');
@@ -97,9 +104,11 @@ const loading_state = {
         game.state.add('menu', menu_state);
         game.state.add('game', game_state);
         game.state.add('end', end_state);
+        game.state.add('parent', parent_state);
+        game.state.add('science', science_state);
     },
     create: function() {
-        game.state.start('menu');
+        game.state.start('end');
     }
 };
 
