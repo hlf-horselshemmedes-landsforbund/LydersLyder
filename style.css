@@ -106,3 +106,67 @@ body {
     background: url(images/sound-on.png);
 }
 
+#stat-info {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 50%;
+    height: 100%;
+    padding: 8px;
+    font-size: 10pt;
+}
+
+#stat-intro > h1 {
+    font-size: 16pt;
+}
+
+.stat-target {
+    display: inline-block;
+    width: 19ex;
+}
+
+.stat-snr {
+    display: inline-block;
+    width: 15ex;
+}
+
+.stat-result {
+    display: inline-block;
+    width: 21ex;
+}
+
+.stat-time {
+    display: inline-block;
+    width: 10ex;
+}
+
+#stat-tab {
+    position: absolute;
+    top: 4.5em;
+    right: 8px;
+    width: 45%;
+    height: 100%;
+    padding: 8px;
+    font-size: 10pt;
+}
+
+.stat-tab-format {
+    font-weight: bold;
+}
+
+.stat-tab-line {
+    font-size: 8pt;
+}
+
+#stat-btn-back {
+    position: absolute;
+    right: 16px;
+    bottom: 99px;
+}
+
+#stat-btn-reload {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+}
+

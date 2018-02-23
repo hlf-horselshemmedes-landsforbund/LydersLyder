@@ -1,5 +1,6 @@
 let num_correct = 0;
 let final_score = 0;
+let game_log = [];
 
 let waiting_for_choice = false;
 let animator = null;
@@ -7,6 +8,15 @@ const sprites = {};
 const sequence = [];
 
 let target_id = null;
+
+function LogWord(target, snr, result, time) {
+    game_log.push({
+        target: target,
+        SNR: snr,
+        result: result,
+        time: (time / 1000).toFixed(1)
+    });
+}
 
 function GameItem(group, def, col, row) {
     this.id = def.id;
@@ -64,12 +74,12 @@ function get_volume_from_SNR(snr) {
 }
 
 const game_state = {
+    target_word: "",
     create: function() {
         num_correct = 0;
 
         this.curr_SNR = INITIAL_SNR;
         this.signal_base_SNR = 6; // Because we can not boost the audio files from the browser, we have made the signals be +6dB at vol = 1
-        this.played_SNRs = [];
 
         //game.add.image(0, 0, 'bg-light');
         game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
@@ -126,6 +136,7 @@ const game_state = {
             const time_passed = (performance.now() - this.word_start_time) / 1000.0;
             if(time_passed >= (TIME_BEFORE_TIMER + TIMER_DURATION)) {
                 waiting_for_choice = false;
+                LogWord(this.target_word, this.curr_SNR, "timeout", performance.now() - game_state.word_start_time);
                 on_wrong_choice_or_timeout();
             }
             else if(time_passed > TIME_BEFORE_TIMER) {
@@ -162,8 +173,6 @@ const game_state = {
         ++this.current_word_index;
         this.hide_timer();
 
-        this.played_SNRs.push(this.curr_SNR);
-
         if(this.current_word_index >= this.word_sequence.length) {
             this.noise.stop();
             final_score = calc_final_score();
@@ -175,6 +184,7 @@ const game_state = {
             this.prog_bar.crop(this.prog_rect);
 
             target_id = this.word_sequence[this.current_word_index];
+            this.target_word = game_items[target_id].name;
 
             this.noise.stop();
             this.noise.play();
@@ -202,12 +212,21 @@ const game_state = {
 
 function calc_final_score() {
     let score = 0;
+
     const num_SNRs_to_count = results_to_count_for_final_score;
-    for(let i=game_state.played_SNRs.length-num_SNRs_to_count; i<game_state.played_SNRs.length; ++i) {
-        score += game_state.played_SNRs[i];
+
+    for(
+        let i=game_log.length-(num_SNRs_to_count-1);
+        i<game_log.length;
+        ++i) {
+
+        score += game_log[i].SNR;
     }
 
+    score += game_state.curr_SNR;
+
     score /= num_SNRs_to_count;
+
     return score;
 }
 
@@ -254,6 +273,11 @@ function on_sprite_click(circle) {
 
     if(circle.id === target_id) {
         ++num_correct;
+
+        LogWord(
+            game_state.target_word, game_state.curr_SNR,
+            circle.name, performance.now() - game_state.word_start_time);
+
         game_state.curr_SNR -= STEP_SNR;
         if(game_state.curr_SNR < MIN_SNR) {
             game_state.curr_SNR = MIN_SNR;
@@ -275,7 +299,9 @@ function on_sprite_click(circle) {
         const shake = game.add.tween(circle.sprite)
             .to({ angle: -circle.sprite.angle }, 50, 'Linear', true, 0, 0, true);
 
-        // TODO(istarnion): Play transition
+        LogWord(
+            game_state.target_word, game_state.curr_SNR,
+            circle.name, performance.now() - game_state.word_start_time);
 
         shake.onComplete.add(() => {
             circle.sprite.angle = 0;
