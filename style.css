@@ -160,8 +160,8 @@ body {
 
 #stat-btn-back {
     position: absolute;
-    right: 16px;
-    bottom: 99px;
+    right: 350px;
+    bottom: 8px;
 }
 
 #stat-btn-reload {

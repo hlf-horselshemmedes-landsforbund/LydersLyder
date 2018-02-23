@@ -3,9 +3,9 @@ const STEP_SNR = 2;
 const MIN_SNR = -40;
 const MAX_SNR = 6;
 
-const SEQUENCE_LENGTH = 4;
+const SEQUENCE_LENGTH = 20;
 
-const results_to_count_for_final_score = 3; // The 10 last and the one that would have played next
+const results_to_count_for_final_score = 11; // The 10 last and the one that would have played next
 
 const TIME_BEFORE_TIMER = 8;    // In seconds
 const TIMER_DURATION = 8;       // in seconds.

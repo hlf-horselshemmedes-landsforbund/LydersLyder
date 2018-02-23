@@ -1,10 +1,8 @@
-// final_score.toFixed(2)
 const science_state = {
     container: null,
     canvas: null,
     ui: null,
     create: function() {
-        console.log(game_log);
 
         this.container = document.querySelector("#game-container");
         this.canvas = document.querySelector("#game-container > canvas");
@@ -16,12 +14,12 @@ const science_state = {
 
         let tab_data = "";
 
-        html += `<h1>ID: ${0} Resultat: ${final_score.toFixed(2)} Kjønn: ${"Mann"} Alder: ${6}</h1>\n`;
+        html += `<h1>ID: ${personal_data.ID} Resultat: ${final_score.toFixed(2)} Kjønn: ${personal_data.sex} Alder: ${personal_data.age}</h1>\n`;
         for(let i=0; i<game_log.length; ++i) {
             const log = game_log[i];
             html += `<span class="stat-target">${i+1}. ${log.target}</span><span class="stat-snr">SNR: ${log.SNR.toFixed(2)}</span><span class="stat-result">Svar: ${log.result}</span><span class="stat-time">Tid: ${log.time}s</span><br/>\n`;
 
-            tab_data += `<span class="stat-tab-line">${0};${"Mann"};${6};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}</span><br/>\n`;
+            tab_data += `<span class="stat-tab-line">${personal_data.ID};${personal_data.sex};${personal_data.age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}</span><br/>\n`;
         }
         html += '</div>\n<div id="stat-tab">\n';
 

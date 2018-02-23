@@ -119,6 +119,7 @@ function preload() {
     game.scale.refresh();
 
     game.stage.backgroundColor = "#FFF";
+    game.stage.disableVisibilityChange = true;
 
     load_image('prog-bar-outline');
     load_image('prog-bar-fill');

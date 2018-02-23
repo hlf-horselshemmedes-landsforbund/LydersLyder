@@ -76,6 +76,17 @@ function get_volume_from_SNR(snr) {
 const game_state = {
     target_word: "",
     create: function() {
+        const storage = window.localStorage;
+        personal_data.ID = storage.getItem('last-id');
+        if(personal_data.ID !== null) {
+            personal_data.ID = Number.parseInt(personal_data.ID) + 1;
+        }
+        else {
+            personal_data.ID = 0;
+        }
+
+        storage.setItem('last-id', personal_data.ID);
+
         num_correct = 0;
 
         this.curr_SNR = INITIAL_SNR;

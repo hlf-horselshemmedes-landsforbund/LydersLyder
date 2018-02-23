@@ -1,3 +1,9 @@
+const personal_data = {
+    ID: 0,  // ID is generated when the game starts
+    age: 0,
+    sex: "kvinne"
+};
+
 const menu_state = {
     container: null,
     canvas: null,
@@ -36,6 +42,24 @@ const menu_state = {
         this.container.appendChild(this.ui);
 
         document.querySelector("#intro-btn-start").addEventListener("click", () => {
+            const age = document.querySelector("#intro-field-age").value;
+            console.log(age);
+            if(age > 0 && age < 199) {
+                personal_data.age = age;
+            }
+
+            const female_toggle = document.querySelector("#intro-select-sex-female");
+            const male_toggle = document.querySelector("#intro-select-sex-male");
+            if(female_toggle.checked === true && male_toggle.checked === false) {
+                personal_data.sex = "kvinne";
+            }
+            else if(male_toggle.checked === true && female_toggle.checked === false) {
+                personal_data.sex = "mann";
+            }
+            else {
+                personal_data.sex = "n/a"; // Sadly, you need to edit the JS or HTML to escape the binary :( Not my call...
+            }
+
             this.ui.remove();
             audio_clips['noise'].stop();
             game.state.start('game');
