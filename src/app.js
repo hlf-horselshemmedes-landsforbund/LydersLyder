@@ -43,6 +43,7 @@ const loading_state = {
         load_image('btn-back');
 
         load_image('result-bar');
+        load_image('result-marker');
 
         load_image('circle-01');
         load_image('circle-02');

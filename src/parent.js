@@ -2,6 +2,53 @@ const parent_state = {
     create: function() {
         game.add.image(game.world.centerX - 999 / 2, 32, 'result-bar');
 
+        const worst_possible_result = (function() {
+            const results = [];
+            let curr = INITIAL_SNR;
+            for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
+                results.push(curr);
+                curr += STEP_SNR;
+            }
+
+            let result = 0;
+            for(let i=0; i<results_to_count_for_final_score; ++i) {
+                result += results[results.length - (i+1)];
+            }
+
+            result /= results_to_count_for_final_score;
+
+            return result;
+        })();
+
+        const best_possible_result = (function() {
+            const results = [];
+            let curr = INITIAL_SNR;
+            for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
+                results.push(curr);
+                curr -= STEP_SNR;
+            }
+
+            let result = 0;
+            for(let i=0; i<results_to_count_for_final_score; ++i) {
+                result += results[results.length - (i+1)];
+            }
+
+            result /= results_to_count_for_final_score;
+
+            return result;
+        })();
+
+        if(!final_score) final_score = 0;
+
+        const left_edge = game.world.centerX - 999 / 2 + 16;
+        const right_edge = game.world.centerX + 999 / 2 - 16;
+        const x = map_range(
+            final_score,
+            best_possible_result, worst_possible_result,
+            right_edge, left_edge) - 8;
+
+        game.add.image(x, 32, 'result-marker');
+
         const legend_style = {
             font: "bold 24px Helvetica",
             fill: "#2D2D2D",

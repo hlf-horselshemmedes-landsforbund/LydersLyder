@@ -1,11 +1,3 @@
-const INITIAL_SNR = 0;
-const STEP_SNR = 2;
-const MIN_SNR = -40;
-const MAX_SNR = 6;
-const SEQUENCE_LENGTH = 20;
-const TIME_BEFORE_TIMER = 8;    // In seconds
-const TIMER_DURATION = 8;       // in seconds.
-
 let num_correct = 0;
 let final_score = 0;
 
@@ -209,7 +201,7 @@ const game_state = {
 
 function calc_final_score() {
     let score = 0;
-    const num_SNRs_to_count = 11;
+    const num_SNRs_to_count = results_to_count_for_final_score;
     for(let i=game_state.played_SNRs.length-num_SNRs_to_count; i<game_state.played_SNRs.length; ++i) {
         score += game_state.played_SNRs[i];
     }
