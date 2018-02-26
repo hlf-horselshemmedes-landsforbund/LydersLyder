@@ -38,6 +38,7 @@ Animator.prototype.new_animation = function(userdata, anim) {
 Animator.prototype.start = function() {
     this.animating = true;
     this.last_time = performance.now();
+    this.start_time = performance.now();
     this.current_frame_index = 0;
     this.time_on_current_frame = 0;
 }
@@ -48,17 +49,31 @@ Animator.prototype.update = function() {
         this.time_on_current_frame += now - this.last_time;
         this.last_time = now;
 
+        const time_since_start = performance.now() - this.start_time;
+
+        for(let i=this.animation.sfx_events.length-1; i >= 0; --i) {
+            const event = this.animation.sfx_events[i];
+            if(time_since_start >= event.time) {
+                if(event.sfx === 'mute') {
+                    set_noise_volume(0);
+                }
+                else if(event.sfx === 'noise') {
+                    set_noise_volume(event.volume);
+                }
+                else {
+                    audio_clips[event.sfx].play();
+                }
+
+                this.animation.sfx.events.splice(i, 1);
+            }
+        }
+
         if(this.time_on_current_frame >= 100) {
             this.current_frame_index++;
             this.time_on_current_frame = 0;
 
             if(this.current_frame_index < this.animation.get_num_frames()) {
                 this.sprite.loadTexture(this.animation.get_frame(this.current_frame_index));
-                const vol = this.animation.noise_events[this.current_frame_index];
-                if(vol !== this.current_volume) {
-                    this.current_volume = vol;
-                    set_noise_volume(vol);
-                }
             }
             else {
                 this.animating = false;

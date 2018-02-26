@@ -23,9 +23,7 @@ const game_items = [
         ring: "circle-03",
         resource: "lyse_penner",
         animation1: new Animation("Animasjon_10/Frames-10-1/animspa-101-")
-            .range(1, 23)
-            .noise_event(0)
-            .range(24, 25)
+            .range(1, 25)
             .loop(5, 25)
     },
     {
@@ -63,9 +61,7 @@ const game_items = [
         ring: "circle-01",
         resource: "morke_penner",
         animation1: new Animation("Animasjon_9/Frames-9-1/animspa-91-")
-            .range(1, 21)
-            .noise_event(0)
-            .range(22, 26)
+            .range(1, 26)
             .loop(4, 26)
     },
     {

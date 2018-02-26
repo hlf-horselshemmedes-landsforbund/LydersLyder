@@ -102,6 +102,19 @@ const loading_state = {
         load_audio('morke_penner', 'audio/morke_penner.wav');
         load_audio('morke_ringer', 'audio/morke_ringer.wav');
 
+        load_audio('mandolin', 'audio/sfx/mandolin_sneak_up_accent.mp3');
+        load_audio('pan_pipe_down', 'audio/sfx/64933__timohanes__pan-pipe-down.wav');
+        load_audio('zip_pop', 'audio/sfx/zip_and_pop.mp3');
+        load_audio('zip_pop_dunk', 'audio/sfx/zip_pop_and_donk.mp3');
+        load_audio('double_pop', 'audio/sfx/double_pop.mp3');
+        load_audio('slide_up', 'audio/sfx/slide_whistle_up.mp3');
+        load_audio('ah', 'audio/sfx/BF-Ah-2.wav');
+        load_audio('hrmf', 'audio/sfx/BF-hmrf.wav');
+        load_audio('shocked', 'audio/sfx/BF-shocked-01.wav');
+        load_audio('down_whistle', 'audio/sfx/downward_slide_from_slide_whistle.mp3');
+        load_audio('down_kazoo', 'audio/sfx/downward_slide_on_kazoo.mp3');
+        load_audio('paper_flap', 'audio/sfx/paper-flap.mp3');
+
         game.state.add('menu', menu_state);
         game.state.add('game', game_state);
         game.state.add('end', end_state);

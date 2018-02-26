@@ -337,7 +337,7 @@ function calc_final_score() {
 
 function set_noise_volume(vol) {
     const old_vol = game_state.noise.volume();
-    game_state.noise.fade(old_vol, vol, 500);
+    game_state.noise.fade(old_vol, vol, 100);
 }
 
 function start_animation(circle) {
