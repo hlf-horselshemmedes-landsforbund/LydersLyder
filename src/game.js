@@ -1,4 +1,3 @@
-let num_correct = 0;
 let final_score = 0;
 let game_log = [];
 
@@ -36,6 +35,8 @@ function GameItem(group, def, col, row) {
     this.reset();
     this.circle.position = this.sprite.position.clone();
 
+    this.hide();
+
     // Animate:
     this.circle.angle = 10 * (((row + col & 1) == 0) ? 1 : -1);
     while(Math.abs(this.circle.angle) < 1) this.circle.angle *= 10;
@@ -49,6 +50,19 @@ function GameItem(group, def, col, row) {
     }, this);
 }
 
+GameItem.prototype.hide = function() {
+    this.sprite.scale.setTo(0, 0);
+    this.circle.scale.setTo(0, 0);
+}
+
+GameItem.prototype.show = function() {
+    game.add.tween(this.circle.scale)
+        .to({ x: 1, y: 1 }, 500, Phaser.Easing.Back.Out, true);
+    game.add.tween(this.sprite.scale)
+        .to({ x: 1, y: 1 }, 500, Phaser.Easing.Back.Out, true);
+}
+
+// Reset the circle after it has been scaled up
 GameItem.prototype.reset = function() {
     let offset = 0;
     if((this.row & 1) === 0) {
@@ -69,6 +83,40 @@ GameItem.prototype.reset = function() {
     this.circle.scale.set(1);
 }
 
+function ProgressBar(y) {
+    this.frame = game.add.image(game.width / 2 - 515 / 2, y, 'prog-bar-outline');
+    this.bar = game.add.image(game.width / 2 - 515 / 2, y, 'prog-bar-fill');
+    this.rect = new Phaser.Rectangle(0, 0, 515, 47);
+
+    const prog_text_style = {
+        font: "bold 30px catbirdregular",
+        fill: "#2D2D2D",
+        boundsAlignH: "center",
+        boundsAlignV: "middle"
+    };
+
+    this.text = game.add.text(0, 0, `0 / ${SEQUENCE_LENGTH}`, prog_text_style);
+    this.text.setTextBounds(game.width / 2 - 515 / 2, y, 515, 47);
+}
+
+ProgressBar.prototype.updateProgress = function(progress) {
+    this.text.setText(`${progress} / ${SEQUENCE_LENGTH}`);
+    this.rect.width = 515 * (progress / SEQUENCE_LENGTH);
+    this.bar.crop(this.rect);
+}
+
+// This allows us to tween the progress bar up and down
+Object.defineProperty(ProgressBar.prototype, "y", {
+    set: function(y) {
+        this.frame.y = y;
+        this.bar.y = y;
+        this.text.setTextBounds(game.width / 2 - 515 / 2, y, 515, 47);
+    },
+    get: function() {
+        return this.frame.y;
+    }
+});
+
 function get_volume_from_SNR(snr) {
     return 1.0 * Math.pow(10, (snr - 6) / 20).toFixed(2);
 }
@@ -87,25 +135,10 @@ const game_state = {
 
         storage.setItem('last-id', personal_data.ID);
 
-        num_correct = 0;
-
         this.curr_SNR = INITIAL_SNR;
         this.signal_base_SNR = 6; // Because we can not boost the audio files from the browser, we have made the signals be +6dB at vol = 1
 
-        //game.add.image(0, 0, 'bg-light');
-        game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-outline');
-        this.prog_bar = game.add.image(game.width / 2 - 515 / 2, game.height - 100, 'prog-bar-fill');
-        this.prog_rect = new Phaser.Rectangle(0, 0, 515, 47);
-
-        const prog_text_style = {
-            font: "bold 30px catbirdregular",
-            fill: "#2D2D2D",
-            boundsAlignH: "center",
-            boundsAlignV: "middle"
-        };
-
-        this.prog_text = game.add.text(0, 0, `0 / ${SEQUENCE_LENGTH}`, prog_text_style);
-        this.prog_text.setTextBounds(game.width / 2 - 515 / 2, game.height - 100, 515, 47);
+        this.prog_bar = new ProgressBar(game.height + 100);
 
         let i = 0;
         this.group = game.add.group(null, 'Game items', true);
@@ -137,7 +170,37 @@ const game_state = {
         this.current_word_index = -1;
         this.word_sequence = generate_word_sequence();
 
-        this.choose_next_word();
+        // INTRO SEQUENCE
+        const timer = game.time.create(false);
+        timer.start();
+        i = 0;
+        const start_vol = get_volume_from_SNR(INITIAL_SNR);
+
+        const introduce_word = () => {
+            const name = game_items[i].name;
+            const resource = game_items[i].resource;
+            sprites[name].show()
+            timer.add(250, () => {
+                const clip = audio_clips[resource];
+                clip.volume(start_vol);
+                clip.play();
+            });
+
+            if(++i >= game_items.length) {
+                // All words are now introduced, show countdown to start:
+                timer.add(4000, () => {
+                    timer.destroy();
+                    game.add.tween(this.prog_bar)
+                        .to({ y: game.height - 100 }, 300, Phaser.Easing.Back.Out, true);
+                    this.choose_next_word();
+                });
+            }
+            else {
+                timer.add(3000, introduce_word);
+            }
+        }
+
+        timer.add(1000, introduce_word);
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);
@@ -190,9 +253,7 @@ const game_state = {
             game.state.start('end');
         }
         else {
-            this.prog_text.setText(`${this.current_word_index+1} / ${SEQUENCE_LENGTH}`);
-            this.prog_rect.width = 515 * ((this.current_word_index+1) / SEQUENCE_LENGTH);
-            this.prog_bar.crop(this.prog_rect);
+            this.prog_bar.updateProgress(this.current_word_index+1);
 
             target_id = this.word_sequence[this.current_word_index];
             this.target_word = game_items[target_id].name;
@@ -283,8 +344,6 @@ function on_sprite_click(circle) {
     waiting_for_choice = false;
 
     if(circle.id === target_id) {
-        ++num_correct;
-
         LogWord(
             game_state.target_word, game_state.curr_SNR,
             circle.name, performance.now() - game_state.word_start_time);
