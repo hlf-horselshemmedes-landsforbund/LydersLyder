@@ -188,12 +188,45 @@ const game_state = {
 
             if(++i >= game_items.length) {
                 // All words are now introduced, show countdown to start:
-                timer.add(4000, () => {
-                    timer.destroy();
-                    game.add.tween(this.prog_bar)
-                        .to({ y: game.height - 100 }, 300, Phaser.Easing.Back.Out, true);
-                    this.choose_next_word();
-                });
+                // First, add overlay to fade out the scene
+                const overlay = game.add.graphics();
+                this.group.add(overlay);
+                overlay.beginFill(0xFFFFFF);
+                overlay.drawRect(0, 0, game.width, game.height);
+                overlay.endFill();
+
+                overlay.alpha = 0;
+
+                game.add.tween(overlay)
+                    .to({ alpha: 0.5 }, 1000, 'Linear', true)
+                    .onComplete.add(() => {
+                        const intro_text_style = {
+                            font: "bold 128px catbirdregular",
+                            fill: "#2D2D2D",
+                        };
+
+                        const intro_text = game.add.text(game.width/2-250, game.height/2-150, "", intro_text_style);
+                        this.group.add(intro_text);
+
+                        timer.add(1000, () => { intro_text.setText(intro_text.text + 'ER DU KLAR?\n'); });
+                        timer.add(2000, () => { intro_text.setText(intro_text.text + '  1'); });
+                        timer.add(2750, () => { intro_text.setText(intro_text.text + ' - 2'); });
+                        timer.add(3500, () => { intro_text.setText(intro_text.text + ' - 3!'); });
+
+                        timer.add(4250, () => {
+                            // Fade in the scene again, and start the game
+                            intro_text.destroy();
+                            game.add.tween(overlay)
+                                .to({ alpha: 0 }, 250, 'Linear', true)
+                                .onComplete.add(() => {
+                                    overlay.destroy();
+                                    timer.destroy();
+                                    game.add.tween(this.prog_bar)
+                                        .to({ y: game.height - 100 }, 300, Phaser.Easing.Back.Out, true);
+                                    this.choose_next_word();
+                                });
+                        });
+                    })
             }
             else {
                 timer.add(3000, introduce_word);
