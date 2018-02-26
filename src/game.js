@@ -205,7 +205,7 @@ const game_state = {
                             fill: "#2D2D2D",
                         };
 
-                        const intro_text = game.add.text(game.width/2-250, game.height/2-150, "", intro_text_style);
+                        const intro_text = game.add.text(game.width/2-300, game.height/2-150, "", intro_text_style);
                         this.group.add(intro_text);
 
                         timer.add(1000, () => { intro_text.setText(intro_text.text + 'ER DU KLAR?\n'); });
@@ -229,7 +229,7 @@ const game_state = {
                     })
             }
             else {
-                timer.add(3000, introduce_word);
+                timer.add(2500, introduce_word);
             }
         }
 
