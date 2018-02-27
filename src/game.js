@@ -22,9 +22,10 @@ function GameItem(group, def, col, row) {
     this.name = def.name;
     this.animation1 = def.animation1;
     this.animation2 = def.animation2;
+    this.has_played_first_anim = false;
 
-    this.circle = group.create(0, 0, def.ring);
-    this.sprite = group.create(0, 0, def.resource);
+    this.circle = group.create(0, 0, 'sprites', def.ring);
+    this.sprite = group.create(0, 0, 'sprites', def.resource);
 
     this.sprite.anchor.x = this.sprite.anchor.y = 0.5;
     this.circle.anchor.x = this.circle.anchor.y = 0.5;
@@ -84,8 +85,8 @@ GameItem.prototype.reset = function() {
 }
 
 function ProgressBar(y) {
-    this.frame = game.add.image(game.width / 2 - 515 / 2, y, 'prog-bar-outline');
-    this.bar = game.add.image(game.width / 2 - 515 / 2, y, 'prog-bar-fill');
+    this.frame = game.add.image(game.width / 2 - 515 / 2, y, 'sprites', 'prog-bar-outline');
+    this.bar = game.add.image(game.width / 2 - 515 / 2, y, 'sprites', 'prog-bar-fill');
     this.rect = new Phaser.Rectangle(0, 0, 515, 47);
 
     const prog_text_style = {
@@ -229,7 +230,7 @@ const game_state = {
                     })
             }
             else {
-                timer.add(2500, introduce_word);
+                timer.add(250, introduce_word);
             }
         }
 
@@ -342,7 +343,13 @@ function set_noise_volume(vol) {
 
 function start_animation(circle) {
     game_state.noise.fade(0, 0.5, 750);
-    animator.new_animation(circle, circle.animation1);
+    if(circle.has_played_first_anim) {
+        animator.new_animation(circle, circle.animation2);
+    }
+    else {
+        animator.new_animation(circle, circle.animation1);
+        circle.has_played_first_anim = true;
+    }
 }
 
 function on_animation_end(circle) {

@@ -22,3 +22,7 @@ function map_range(x, in_min, in_max, out_min, out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+function add_button(x, y, sprite, group) {
+    return game.add.button(x, y, 'sprites', undefined, undefined, sprite, sprite, sprite, group);
+}
+

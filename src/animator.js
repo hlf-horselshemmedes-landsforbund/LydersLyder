@@ -24,6 +24,10 @@ Animator.prototype.new_animation = function(userdata, anim) {
     this.userdata = userdata;
     this.animation = anim;
 
+    for(const event in anim.sfx_events) {
+        event.played = false;
+    }
+
     this.sprite = this.group.create(0, 0, anim.get_frame(0));
 
     this.sprite.alpha = 0;
@@ -53,7 +57,8 @@ Animator.prototype.update = function() {
 
         for(let i=this.animation.sfx_events.length-1; i >= 0; --i) {
             const event = this.animation.sfx_events[i];
-            if(time_since_start >= event.time) {
+            if(!(event.played) && time_since_start >= event.time) {
+                event.played = true;
                 if(event.sfx === 'mute') {
                     set_noise_volume(0);
                 }
@@ -63,8 +68,6 @@ Animator.prototype.update = function() {
                 else {
                     audio_clips[event.sfx].play();
                 }
-
-                this.animation.sfx.events.splice(i, 1);
             }
         }
 

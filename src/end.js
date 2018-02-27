@@ -22,10 +22,10 @@ const end_state = {
         text.setTextBounds(0, 0, game.width, game.height);
 
         const parent_button =
-            game.add.button(game.world.centerX - 325, game.height - 128, 'btn-results');
+            add_button(game.world.centerX - 325, game.height - 128, 'btn-results');
 
         const science_button =
-            game.add.button(game.world.centerX + 16, game.height - 128, 'btn-science');
+            add_button(game.world.centerX + 16, game.height - 128, 'btn-science');
 
         parent_button.onInputUp.add(() => {
             game.state.start('parent');

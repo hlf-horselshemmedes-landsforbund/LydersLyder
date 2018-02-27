@@ -75,7 +75,7 @@ const menu_state = {
             }
         });
 
-        game.add.image(game.world.centerX - 288 / 2, 32, 'logo-lyderslyder');
+        game.add.image(game.world.centerX - 288 / 2, 32, 'sprites', 'logo-lyderslyder');
         game.add.image(game.width - 256, 0, 'version_img');
     },
 

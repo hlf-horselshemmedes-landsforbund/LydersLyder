@@ -32,36 +32,8 @@ const loading_state = {
         game.load.setPreloadSprite(load_bar_fill);
 
         load_image('bg-light');
-
         load_image('version_img');
-
-        load_image('logo-lyderslyder');
-        load_image('btn-start');
-        load_image('btn-reload');
-        load_image('btn-results');
-        load_image('btn-science');
-        load_image('btn-back');
-
-        load_image('result-bar');
-        load_image('result-marker');
-
-        load_image('circle-01');
-        load_image('circle-02');
-        load_image('circle-03');
-
-        load_image('lyse_kasser');
-        load_image('lyse_knapper');
-        load_image('lyse_kurver');
-        load_image('lyse_luer');
-        load_image('lyse_penner');
-        load_image('lyse_ringer');
-
-        load_image('morke_kasser');
-        load_image('morke_knapper');
-        load_image('morke_kurver');
-        load_image('morke_luer');
-        load_image('morke_penner');
-        load_image('morke_ringer');
+        game.load.atlas('sprites', 'images/atlas.png', 'images/atlas.json');
 
         for(let i=0; i<10; ++i) {
             const filename = `images/transition/animspa-transition-${left_pad_string(i+1, 2)}.png`
@@ -79,7 +51,20 @@ const loading_state = {
 
                     if(loaded_anim_frames.indexOf(name) === -1) {
                         loaded_anim_frames.push(name);
-                        load_image(name, 'jpg');
+                        load_image(name);
+                    }
+                }
+            }
+
+            if(game_item.hasOwnProperty("animation2")) {
+                const anim = game_item.animation2;
+
+                for(let i=0; i<anim.get_num_frames(); ++i) {
+                    const name = anim.get_frame(i);
+
+                    if(loaded_anim_frames.indexOf(name) === -1) {
+                        loaded_anim_frames.push(name);
+                        load_image(name);
                     }
                 }
             }
@@ -101,19 +86,6 @@ const loading_state = {
         load_audio('morke_luer', 'audio/morke_luer.wav');
         load_audio('morke_penner', 'audio/morke_penner.wav');
         load_audio('morke_ringer', 'audio/morke_ringer.wav');
-
-        load_audio('mandolin', 'audio/sfx/mandolin_sneak_up_accent.mp3');
-        load_audio('pan_pipe_down', 'audio/sfx/64933__timohanes__pan-pipe-down.wav');
-        load_audio('zip_pop', 'audio/sfx/zip_and_pop.mp3');
-        load_audio('zip_pop_dunk', 'audio/sfx/zip_pop_and_donk.mp3');
-        load_audio('double_pop', 'audio/sfx/double_pop.mp3');
-        load_audio('slide_up', 'audio/sfx/slide_whistle_up.mp3');
-        load_audio('ah', 'audio/sfx/BF-Ah-2.wav');
-        load_audio('hrmf', 'audio/sfx/BF-hmrf.wav');
-        load_audio('shocked', 'audio/sfx/BF-shocked-01.wav');
-        load_audio('down_whistle', 'audio/sfx/downward_slide_from_slide_whistle.mp3');
-        load_audio('down_kazoo', 'audio/sfx/downward_slide_on_kazoo.mp3');
-        load_audio('paper_flap', 'audio/sfx/paper-flap.mp3');
 
         game.state.add('menu', menu_state);
         game.state.add('game', game_state);
