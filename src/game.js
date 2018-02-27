@@ -210,9 +210,9 @@ const game_state = {
                         this.group.add(intro_text);
 
                         timer.add(1000, () => { intro_text.setText(intro_text.text + 'ER DU KLAR?\n'); });
-                        timer.add(2000, () => { intro_text.setText(intro_text.text + '  1'); });
+                        timer.add(2000, () => { intro_text.setText(intro_text.text + '  3'); });
                         timer.add(2750, () => { intro_text.setText(intro_text.text + ' - 2'); });
-                        timer.add(3500, () => { intro_text.setText(intro_text.text + ' - 3!'); });
+                        timer.add(3500, () => { intro_text.setText(intro_text.text + ' - 1!'); });
 
                         timer.add(4250, () => {
                             // Fade in the scene again, and start the game
@@ -230,7 +230,7 @@ const game_state = {
                     })
             }
             else {
-                timer.add(250, introduce_word);
+                timer.add(2500, introduce_word);
             }
         }
 
