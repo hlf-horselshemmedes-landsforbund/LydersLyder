@@ -172,6 +172,11 @@ const game_state = {
         this.word_sequence = generate_word_sequence();
 
         // INTRO SEQUENCE
+        let skip_intro = false;
+        const skip_button = add_button(game.width - 316, game.height - 90, 'btn-skip');
+        skip_button.onInputUp.add(() => {
+            skip_intro = true;
+        });
         const timer = game.time.create(false);
         timer.start();
         i = 0;
@@ -181,13 +186,10 @@ const game_state = {
             const name = game_items[i].name;
             const resource = game_items[i].resource;
             sprites[name].show()
-            timer.add(250, () => {
-                const clip = audio_clips[resource];
-                clip.volume(start_vol);
-                clip.play();
-            });
 
             if(++i >= game_items.length) {
+                skip_button.destroy();
+
                 // All words are now introduced, show countdown to start:
                 // First, add overlay to fade out the scene
                 const overlay = game.add.graphics();
@@ -230,11 +232,29 @@ const game_state = {
                     })
             }
             else {
-                timer.add(2500, introduce_word);
+                if(skip_intro) {
+                    skip_button.destroy();
+                    this.skip_tutorial();
+                }
+                else {
+                    timer.add(250, () => {
+                        const clip = audio_clips[resource];
+                        clip.volume(start_vol);
+                        clip.play();
+                    });
+
+                    timer.add(2500, introduce_word);
+                }
             }
         }
 
         timer.add(1000, introduce_word);
+    },
+    skip_tutorial: function() {
+        for(const item of game_items) {
+            sprites[item.name].show();
+        }
+        this.choose_next_word();
     },
     update: function() {
         this.group.sort('z', Phaser.Group.SORT_ASCENDING);

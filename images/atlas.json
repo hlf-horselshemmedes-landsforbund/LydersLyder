@@ -33,8 +33,16 @@
 	"sourceSize": {"w":309,"h":83}
 },
 {
+	"filename": "btn-skip",
+	"frame": {"x":513,"y":347,"w":309,"h":83},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":309,"h":83},
+	"sourceSize": {"w":309,"h":83}
+},
+{
 	"filename": "btn-start-old",
-	"frame": {"x":513,"y":347,"w":247,"h":92},
+	"frame": {"x":1,"y":378,"w":247,"h":92},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":247,"h":92},
@@ -50,7 +58,7 @@
 },
 {
 	"filename": "circle-01",
-	"frame": {"x":762,"y":419,"w":207,"h":182},
+	"frame": {"x":1,"y":472,"w":207,"h":182},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":207,"h":182},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "circle-03",
-	"frame": {"x":1,"y":378,"w":200,"h":189},
+	"frame": {"x":512,"y":432,"w":200,"h":189},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":189},
@@ -106,7 +114,7 @@
 },
 {
 	"filename": "lyse_luer",
-	"frame": {"x":335,"y":490,"w":114,"h":98},
+	"frame": {"x":380,"y":507,"w":114,"h":98},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":114,"h":98},
@@ -114,7 +122,7 @@
 },
 {
 	"filename": "lyse_penner",
-	"frame": {"x":203,"y":378,"w":136,"h":82},
+	"frame": {"x":824,"y":419,"w":136,"h":82},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":136,"h":82},
@@ -146,7 +154,7 @@
 },
 {
 	"filename": "morke_kurver",
-	"frame": {"x":203,"y":462,"w":130,"h":99},
+	"frame": {"x":380,"y":406,"w":130,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":130,"h":99},
@@ -154,7 +162,7 @@
 },
 {
 	"filename": "morke_luer",
-	"frame": {"x":203,"y":563,"w":114,"h":98},
+	"frame": {"x":210,"y":596,"w":114,"h":98},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":114,"h":98},
@@ -162,7 +170,7 @@
 },
 {
 	"filename": "morke_penner",
-	"frame": {"x":341,"y":406,"w":136,"h":82},
+	"frame": {"x":210,"y":512,"w":136,"h":82},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":136,"h":82},
@@ -170,7 +178,7 @@
 },
 {
 	"filename": "morke_ringer",
-	"frame": {"x":479,"y":441,"w":128,"h":132},
+	"frame": {"x":250,"y":378,"w":128,"h":132},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":132},
@@ -215,6 +223,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:af76ff1bf94c0fc3e8ac68276414fda3:2f17c5988e75303b52b4c2bb5722fea6:cbce6b53f0f49e0bf15173c25c41f876$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d4632064309d54b5123b3fa0d0037b20:52eca7bfb6370f333f91bec192f67a2a:cbce6b53f0f49e0bf15173c25c41f876$"
 }
 }
