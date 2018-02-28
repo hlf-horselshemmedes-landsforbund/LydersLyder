@@ -32,3 +32,20 @@ Exit/restart in game
 Vi skal lagre:
 For hver test: alder, kjønn og en liste over hva som skjedde. Hvert elemnt skal ha: hvilken lyd ble spilt, hvilken SNR, hva valgte barnet, og hvor lang tid brukte barnet.
 
+# Møte 2018-02-28
+Olav og Jon fra Sintef, Nina, Jan Erik og Hallgeir fra Ablemagic
+
+Hvor er vi?
+Full randomisering på sekvensen? Diskuteres. Ingen konklusjon
+Input alder kjønn flyttes til forskersiden
+Tester med sinustone, uten støy
+
+BUG: Av og til mangler noen filer(?) noen lyder ble ikke spilt av (under intro) Mørke luer
+BUG: Plassering av markør i tilfellet alt feil er feil
+
+Etter ny kalibrering må vi sette threshold for linjen på foreldresiden
+
+Vi skal undersøke om vi kan sende mail fra Android Chrome. En mail for hver test
+
+Ta kontakt med HLF
+

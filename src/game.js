@@ -186,6 +186,11 @@ const game_state = {
             const name = game_items[i].name;
             const resource = game_items[i].resource;
             sprites[name].show()
+            timer.add(250, () => {
+                const clip = audio_clips[resource];
+                clip.volume(start_vol);
+                clip.play();
+            });
 
             if(++i >= game_items.length) {
                 skip_button.destroy();
@@ -234,15 +239,12 @@ const game_state = {
             else {
                 if(skip_intro) {
                     skip_button.destroy();
+                    timer.destroy();
+                    game.add.tween(this.prog_bar)
+                        .to({ y: game.height - 100 }, 300, Phaser.Easing.Back.Out, true);
                     this.skip_tutorial();
                 }
                 else {
-                    timer.add(250, () => {
-                        const clip = audio_clips[resource];
-                        clip.volume(start_vol);
-                        clip.play();
-                    });
-
                     timer.add(2500, introduce_word);
                 }
             }

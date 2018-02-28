@@ -36,7 +36,7 @@ const menu_state = {
             '<img src="images/spa-anim-foss.gif" alt="Animert foss"></img>\n' +
             '<input id="intro-toggle-audio" type="checkbox"></input>\n' +
             '<label id="intro-toggle-audio-label" for="intro-toggle-audio"></label>\n' +
-            '<p>Gjennomfør spillet i stille omgivelser &mdash; Bruk gjerne hodetelefoner. Før du starter må du justere lyden så du hører suset fra fossen tydelig</p>\n' +
+            '<p>Gjennomfør spillet i stille omgivelser &mdash; Bruk gjerne hodetelefoner. Før du starter må du justere lyden så du hører suset fra fossen høyt og tydelig</p>\n' +
             '</div>';
 
         this.container.appendChild(this.ui);
