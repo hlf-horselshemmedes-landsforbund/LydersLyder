@@ -8,6 +8,7 @@ const parent_state = {
             for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
                 results.push(curr);
                 curr += STEP_SNR;
+                if(curr > MAX_SNR) curr = MAX_SNR;
             }
 
             let result = 0;
@@ -26,6 +27,7 @@ const parent_state = {
             for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
                 results.push(curr);
                 curr -= STEP_SNR;
+                if(curr < MIN_SNR) curr = MIN_SNR;
             }
 
             let result = 0;
