@@ -36,8 +36,6 @@ Full randomisering på sekvensen?
 Input alder kjønn flyttes til forskersiden
 Tester med sinustone, uten støy
 
-BUG: Plassering av markør i tilfellet alt feil er feil
-
 Etter ny kalibrering må vi sette threshold for linjen på foreldresiden
 
 Vi skal undersøke om vi kan sende mail fra Android Chrome. En mail for hver test

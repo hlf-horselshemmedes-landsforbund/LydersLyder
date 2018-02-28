@@ -12,6 +12,11 @@ const TIMER_DURATION = 8;       // in seconds.
 
 const SNR_threshold = -4;   // Any worse than this, and we suspect difficulties hearing
 
+const intro_text_header = "TEST HØRSELEN — INFORMASJON TIL DE VOKSNE";
+const intro_text = "Spillet tar ca. ti minutter og passer for barn fra 5 år. Det går ut på å høre ord gjennom støy,\nog trykke på bilde av det ordet du hører. Spilleren må forstå norsk.\n\nSiden spillet er en hørselstest, vil noen av ordene være vanskelig å høre. Også for de som\nhører godt.";
+
+const intro_vol_calibration_text = "Gjennomfør spillet i stille omgivelser &mdash; Bruk gjerne hodetelefoner. Før du starter må du justere lyden så du hører suset fra fossen høyt og tydelig";
+
 const result_text_below_threshold = "Resultatet viser ingen tegn på nedsatt hørsel.\nHvis du likevel er usikker, kan du la barnet prøve spillet en gang til – eller ta kontakt med fastlegen for en vurdering.";
 
 const result_text_above_threshold = "Resultatet kan bety at barnet hører dårlig.\nVi anbefaler at du tar kontakt med fastlegen for en vurdering og mulig henvisning til spesialist.\nHvis du er usikker, kan du la barnet prøve spillet en gang til.";

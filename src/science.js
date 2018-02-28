@@ -1,3 +1,9 @@
+const personal_data = {
+    ID: 0,  // ID is generated when the game starts
+    age: 0,
+    sex: "kvinne"
+};
+
 const science_state = {
     container: null,
     canvas: null,

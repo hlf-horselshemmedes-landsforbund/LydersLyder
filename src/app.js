@@ -33,6 +33,7 @@ const loading_state = {
 
         load_image('bg-light');
         load_image('version_img');
+        load_image('waterfall_border');
         game.load.atlas('sprites', 'images/atlas.png', 'images/atlas.json');
 
         for(let i=0; i<10; ++i) {
@@ -71,6 +72,8 @@ const loading_state = {
         }
 
         game.load.spritesheet('clap', 'images/clap/clap.png', 512, 512);
+        game.load.spritesheet('waterfall', 'images/waterfall.png', 256, 256);
+        game.load.spritesheet('sound_toggle', 'images/sound-toggle.png', 48, 48);
 
         load_audio('noise', 'audio/Noise_1.wav', true);
 
