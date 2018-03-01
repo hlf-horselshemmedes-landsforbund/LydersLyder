@@ -110,14 +110,10 @@ body {
     position: absolute;
     top: 0;
     left: 8px;
-    width: 50%;
+    width: 70%;
     height: 100%;
     padding: 8px;
     font-size: 10pt;
-}
-
-#stat-intro > h1 {
-    font-size: 16pt;
 }
 
 .stat-target {
@@ -140,32 +136,23 @@ body {
     width: 10ex;
 }
 
-#stat-tab {
+#stat-input {
     position: absolute;
-    top: 4.5em;
-    right: 8px;
-    width: 45%;
-    height: 100%;
-    padding: 8px;
-    font-size: 10pt;
-}
-
-.stat-tab-format {
-    font-weight: bold;
-}
-
-.stat-tab-line {
-    font-size: 8pt;
+    width: 25%;
+    right: 16px;
+    top: 16px;
 }
 
 #stat-btn-back {
     position: absolute;
-    right: 350px;
-    bottom: 8px;
+    width: 25%;
+    right: 16px;
+    bottom: 15%;
 }
 
 #stat-btn-reload {
     position: absolute;
+    width: 25%;
     right: 16px;
     bottom: 8px;
 }

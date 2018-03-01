@@ -1,5 +1,6 @@
 let final_score = 0;
 let game_log = [];
+let tester_ID = 0;
 
 let waiting_for_choice = false;
 let animator = null;
@@ -126,15 +127,15 @@ const game_state = {
     target_word: "",
     create: function() {
         const storage = window.localStorage;
-        personal_data.ID = storage.getItem('last-id');
-        if(personal_data.ID !== null) {
-            personal_data.ID = Number.parseInt(personal_data.ID) + 1;
+        tester_ID = storage.getItem('last-id');
+        if(tester_ID !== null) {
+            tester_ID = Number.parseInt(tester_ID) + 1;
         }
         else {
-            personal_data.ID = 0;
+            tester_ID = 0;
         }
 
-        storage.setItem('last-id', personal_data.ID);
+        storage.setItem('last-id', tester_ID);
 
         this.curr_SNR = INITIAL_SNR;
         this.signal_base_SNR = 6; // Because we can not boost the audio files from the browser, we have made the signals be +6dB at vol = 1

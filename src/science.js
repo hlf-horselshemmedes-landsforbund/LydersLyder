@@ -1,14 +1,25 @@
-const personal_data = {
-    ID: 0,  // ID is generated when the game starts
-    age: 0,
-    sex: "kvinne"
-};
-
 const science_state = {
     container: null,
     canvas: null,
     ui: null,
+    get_csv: function() {
+        let CSV_data = ""; // We will add to this string to send to server/mail whatever
+        for(let i=0; i<game_log.length; ++i) {
+            const log = game_log[i];
+
+            const input_age = document.querySelector("#stat-input-age");
+            const age = input_age.value;
+
+            const radio_sex = document.querySelector("#stat-input-sex-f");
+            const sex = (radio_sex.checked) ? "kvinne" : "mann";
+
+            CSV_data += `${tester_ID};${sex};${age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}\n`;
+        }
+
+        return CSV_data;
+    },
     create: function() {
+
 
         this.container = document.querySelector("#game-container");
         this.canvas = document.querySelector("#game-container > canvas");
@@ -18,22 +29,27 @@ const science_state = {
 
         let html = '<div id="stat-info">\n';
 
-        let tab_data = "";
-
-        html += `<h1>ID: ${personal_data.ID} Resultat: ${final_score.toFixed(2)} Kjønn: ${personal_data.sex} Alder: ${personal_data.age}</h1>\n`;
         for(let i=0; i<game_log.length; ++i) {
             const log = game_log[i];
             html += `<span class="stat-target">${i+1}. ${log.target}</span><span class="stat-snr">SNR: ${log.SNR.toFixed(2)}</span><span class="stat-result">Svar: ${log.result}</span><span class="stat-time">Tid: ${log.time}s</span><br/>\n`;
-
-            tab_data += `<span class="stat-tab-line">${personal_data.ID};${personal_data.sex};${personal_data.age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}</span><br/>\n`;
         }
-        html += '</div>\n<div id="stat-tab">\n';
 
-        html += '<span class="stat-tab-format">Tabelldataformat:</span><br/>\n';
-        html += '<span class="stat-tab-format">ID;kjønn;alder;resultat;sekvensnummer;ord;SNR;svar;tid</span><br/>\n';
-        html += tab_data;
+        html += '</div>\n';
 
-        html += '</div>';
+        html += '<div id="stat-input">\n';
+
+        html += '<label for="stat-input-id">ID:</label>\n<br/>\n';
+        html += `<input id="stat-input-id" type="number" value="${tester_ID}"></input>\n<br/>\n`;
+
+        html += '<label for="stat-input-age">Alder:</label>\n<br/>\n';
+        html += '<input id="stat-input-age" type="number" value="0"></input>\n<br/>\n';
+
+        html += '<label for="stat-input-sex-f">Kvinne:</label>\n';
+        html += '<input id="stat-input-sex-f" type="radio" name="stat-sex"checked></input>\n<br/>\n';
+        html += '<label for="stat-input-sex-m">Mann:</label>\n';
+        html += '<input id="stat-input-sex-m" type="radio" name="stat-sex"></input>\n';
+
+        html += '</div>\n';
 
         html += '<input id="stat-btn-back" type="image" src="images/btn-back.png"></input>\n';
         html += '<input id="stat-btn-reload" type="image" src="images/btn-reload.png"></input>\n';
