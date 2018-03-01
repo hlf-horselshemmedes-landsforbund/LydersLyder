@@ -9,6 +9,8 @@ const sequence = [];
 
 let target_id = null;
 
+const test_mode = true; // Set this to true to remove the noise, and replace all words with a sine wave
+
 function LogWord(target, snr, result, time) {
     game_log.push({
         target: target,
@@ -158,7 +160,9 @@ const game_state = {
         animator = new Animator();
         animator.on_complete = on_animation_end;
 
-        this.noise = audio_clips['noise'];
+        if(!test_mode) {
+            this.noise = audio_clips['noise'];
+        }
 
         this.word_start_time = 0;
         this.timer = {
@@ -305,7 +309,10 @@ const game_state = {
         this.hide_timer();
 
         if(this.current_word_index >= this.word_sequence.length) {
-            this.noise.stop();
+            if(!test_mode) {
+                this.noise.stop();
+            }
+
             final_score = calc_final_score();
             game.state.start('end');
         }
@@ -315,20 +322,33 @@ const game_state = {
             target_id = this.word_sequence[this.current_word_index];
             this.target_word = game_items[target_id].name;
 
-            this.noise.stop();
-            this.noise.play();
-            this.noise.fade(0, 0.5, 1000);
+            if(!test_mode) {
+                this.noise.stop();
+                this.noise.play();
+                this.noise.fade(0, 0.5, 1000);
+            }
 
             window.setTimeout(() => {
-                const word_sound = audio_clips[game_items[target_id].resource];
+                let word_sound = null;
+
+                if(test_mode) {
+                    word_sound = audio_clips['sine'];
+                }
+                else {
+                    word_sound = audio_clips[game_items[target_id].resource];
+                }
+
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 console.log(`${this.current_word_index+1}: Playing ${game_items[target_id].name}. Current SNR: ${this.curr_SNR} (Real volume: ${word_sound.volume()})`);
                 word_sound.play();
                 this.word_start_time = performance.now();
                 waiting_for_choice = true;
-                window.setTimeout(() => {
-                    this.noise.fade(0.5, 0, 500);
-                }, 1200);
+
+                if(!test_mode) {
+                    window.setTimeout(() => {
+                        this.noise.fade(0.5, 0, 500);
+                    }, 1200);
+                }
             }, 1250);
         }
     },
@@ -360,12 +380,17 @@ function calc_final_score() {
 }
 
 function set_noise_volume(vol) {
-    const old_vol = game_state.noise.volume();
-    game_state.noise.fade(old_vol, vol, 100);
+    if(!test_mode) {
+        const old_vol = game_state.noise.volume();
+        game_state.noise.fade(old_vol, vol, 100);
+    }
 }
 
 function start_animation(circle) {
-    game_state.noise.fade(0, 0.5, 750);
+    if(!test_mode) {
+        game_state.noise.fade(0, 0.5, 750);
+    }
+
     if(circle.has_played_first_anim) {
         animator.new_animation(circle, circle.animation2);
     }
@@ -378,8 +403,10 @@ function start_animation(circle) {
 function on_animation_end(circle) {
     circle.reset();
 
-    const old_vol = game_state.noise.volume();
-    game_state.noise.fade(old_vol, 0, 500);
+    if(!test_mode) {
+        const old_vol = game_state.noise.volume();
+        game_state.noise.fade(old_vol, 0, 500);
+    }
 
     window.setTimeout(() => {
         game_state.choose_next_word();
