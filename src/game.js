@@ -122,7 +122,7 @@ Object.defineProperty(ProgressBar.prototype, "y", {
 });
 
 function get_volume_from_SNR(snr) {
-    return 1.0 * Math.pow(10, (snr - 6) / 20).toFixed(2);
+    return 1.0 * Math.pow(10, (snr - 6) / 20);
 }
 
 const game_state = {
