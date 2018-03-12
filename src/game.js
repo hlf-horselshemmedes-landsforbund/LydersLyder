@@ -9,7 +9,7 @@ const sequence = [];
 
 let target_id = null;
 
-const test_mode = true; // Set this to true to remove the noise, and replace all words with a sine wave
+const test_mode = false; // Set this to true to remove the noise, and replace all words with a sine wave
 
 function LogWord(target, snr, result, time) {
     game_log.push({
@@ -338,6 +338,7 @@ const game_state = {
                     word_sound = audio_clips[game_items[target_id].resource];
                 }
 
+                word_sound.stop(); // Just in case
                 word_sound.volume(get_volume_from_SNR(this.curr_SNR));
                 console.log(`${this.current_word_index+1}: Playing ${game_items[target_id].name}. Current SNR: ${this.curr_SNR} (Real volume: ${word_sound.volume()})`);
                 word_sound.play();
