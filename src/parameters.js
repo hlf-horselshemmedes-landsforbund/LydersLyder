@@ -2,8 +2,9 @@ const INITIAL_SNR = 0;
 const STEP_SNR = 2;
 const MIN_SNR = -40;
 const MAX_SNR = 6;
-const NOISE_VOL = 0.5;
-const test_mode = true;
+
+let noise_vol = 1.0;
+let test_mode = false; // Test mode skips intro, and swaps word sounds for 1kHz0dB_pulsed and noise for 100Hz0dB. For accurate results, noise_vol should be 0.5 when test_mode is true
 
 const SEQUENCE_LENGTH = 20;
 

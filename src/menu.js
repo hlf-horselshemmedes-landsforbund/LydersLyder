@@ -17,7 +17,6 @@ const menu_state = {
         waterfall.play('fall');
 
         let waterfall_muted = true;
-        audio_clips['noise'].volume(0.5);
         const sound_button = game.add.button(game.width-322-24, 464, 'sound_toggle');
         sound_button.frame = 0;
         sound_button.onInputUp.add(() => {
@@ -34,9 +33,11 @@ const menu_state = {
             else {
                 sound_button.frame = 1;
                 if(test_mode) {
+                    audio_clips['100Hz'].volume(noise_vol);
                     audio_clips['100Hz'].play();
                 }
                 else {
+                    audio_clips['noise'].volume(noise_vol);
                     audio_clips['noise'].play();
                 }
             }

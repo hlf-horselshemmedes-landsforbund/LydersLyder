@@ -75,7 +75,7 @@ const loading_state = {
         game.load.spritesheet('waterfall', 'images/waterfall.png', 256, 256);
         game.load.spritesheet('sound_toggle', 'images/sound-toggle.png', 48, 48);
 
-        load_audio('noise', 'audio/Noise_1.wav', true);
+        load_audio('noise', 'audio/Noise_1-6dB.wav', true);
         load_audio('sine', 'audio/1kHz0dB.wav');
         load_audio('100Hz', 'audio/100Hz0dB.wav');
         load_audio('1kHz_pulsed', 'audio/1kHz0dB_pulsed.wav');
