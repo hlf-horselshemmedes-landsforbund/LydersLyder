@@ -9,8 +9,6 @@ const sequence = [];
 
 let target_id = null;
 
-const test_mode = false; // Set this to true to remove the noise, and replace all words with a sine wave
-
 function LogWord(target, snr, result, time) {
     game_log.push({
         target: target,
@@ -160,7 +158,10 @@ const game_state = {
         animator = new Animator();
         animator.on_complete = on_animation_end;
 
-        if(!test_mode) {
+        if(test_mode) {
+            this.noise = audio_clips['100Hz'];
+        }
+        else {
             this.noise = audio_clips['noise'];
         }
 
@@ -177,7 +178,7 @@ const game_state = {
         this.word_sequence = generate_word_sequence();
 
         // INTRO SEQUENCE
-        let skip_intro = false;
+        let skip_intro = test_mode;
         const skip_button = add_button(game.width - 316, game.height - 90, 'btn-skip');
         skip_button.onInputUp.add(() => {
             skip_intro = true;
@@ -309,9 +310,7 @@ const game_state = {
         this.hide_timer();
 
         if(this.current_word_index >= this.word_sequence.length) {
-            if(!test_mode) {
-                this.noise.stop();
-            }
+            this.noise.stop();
 
             final_score = calc_final_score();
             game.state.start('end');
@@ -322,17 +321,15 @@ const game_state = {
             target_id = this.word_sequence[this.current_word_index];
             this.target_word = game_items[target_id].name;
 
-            if(!test_mode) {
-                this.noise.stop();
-                this.noise.play();
-                this.noise.fade(0, NOISE_VOL, 1000);
-            }
+            this.noise.stop();
+            this.noise.play();
+            this.noise.fade(0, NOISE_VOL, 1000);
 
             window.setTimeout(() => {
                 let word_sound = null;
 
                 if(test_mode) {
-                    word_sound = audio_clips['sine'];
+                    word_sound = audio_clips['1kHz_pulsed'];
                 }
                 else {
                     word_sound = audio_clips[game_items[target_id].resource];

@@ -77,6 +77,8 @@ const loading_state = {
 
         load_audio('noise', 'audio/Noise_1.wav', true);
         load_audio('sine', 'audio/1kHz0dB.wav');
+        load_audio('100Hz', 'audio/100Hz0dB.wav');
+        load_audio('1kHz_pulsed', 'audio/1kHz0dB_pulsed.wav');
 
         load_audio('lyse_kasser', 'audio/lyse_kasser.wav');
         load_audio('lyse_knapper', 'audio/lyse_knapper.wav');

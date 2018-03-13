@@ -24,11 +24,21 @@ const menu_state = {
             waterfall_muted = !waterfall_muted;
             if(waterfall_muted) {
                 sound_button.frame = 0;
-                audio_clips['noise'].stop();
+                if(test_mode) {
+                    audio_clips['100Hz'].stop();
+                }
+                else {
+                    audio_clips['noise'].stop();
+                }
             }
             else {
                 sound_button.frame = 1;
-                audio_clips['noise'].play();
+                if(test_mode) {
+                    audio_clips['100Hz'].play();
+                }
+                else {
+                    audio_clips['noise'].play();
+                }
             }
         });
 

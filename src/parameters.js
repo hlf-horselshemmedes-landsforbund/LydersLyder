@@ -2,7 +2,8 @@ const INITIAL_SNR = 0;
 const STEP_SNR = 2;
 const MIN_SNR = -40;
 const MAX_SNR = 6;
-const NOISE_VOL = 1.0;
+const NOISE_VOL = 0.5;
+const test_mode = true;
 
 const SEQUENCE_LENGTH = 20;
 
