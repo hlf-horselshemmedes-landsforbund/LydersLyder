@@ -19,8 +19,6 @@ const science_state = {
         return CSV_data;
     },
     create: function() {
-
-
         this.container = document.querySelector("#game-container");
         this.canvas = document.querySelector("#game-container > canvas");
 
@@ -29,6 +27,7 @@ const science_state = {
 
         let html = '<div id="stat-info">\n';
 
+        html += `<span class="stat-target">RESULT:</span><span class="stat-snr">SNR: ${final_score.toFixed(2)}</span><br/>\n`;
         for(let i=0; i<game_log.length; ++i) {
             const log = game_log[i];
             html += `<span class="stat-target">${i+1}. ${log.target}</span><span class="stat-snr">SNR: ${log.SNR.toFixed(2)}</span><span class="stat-result">Svar: ${log.result}</span><span class="stat-time">Tid: ${log.time}s</span><br/>\n`;

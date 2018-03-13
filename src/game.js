@@ -325,7 +325,7 @@ const game_state = {
             if(!test_mode) {
                 this.noise.stop();
                 this.noise.play();
-                this.noise.fade(0, 0.5, 1000);
+                this.noise.fade(0, NOISE_VOL, 1000);
             }
 
             window.setTimeout(() => {
@@ -347,7 +347,7 @@ const game_state = {
 
                 if(!test_mode) {
                     window.setTimeout(() => {
-                        this.noise.fade(0.5, 0, 500);
+                        this.noise.fade(NOISE_VOL, 0, 500);
                     }, 1200);
                 }
             }, 1250);
@@ -389,7 +389,7 @@ function set_noise_volume(vol) {
 
 function start_animation(circle) {
     if(!test_mode) {
-        game_state.noise.fade(0, 0.5, 750);
+        game_state.noise.fade(0, NOISE_VOL, 750);
     }
 
     if(circle.has_played_first_anim) {
