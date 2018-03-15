@@ -2,6 +2,7 @@ const science_state = {
     container: null,
     canvas: null,
     ui: null,
+    email_link: null,
     get_csv: function() {
         let CSV_data = ""; // We will add to this string to send to server/mail whatever
         for(let i=0; i<game_log.length; ++i) {
@@ -13,7 +14,7 @@ const science_state = {
             const radio_sex = document.querySelector("#stat-input-sex-f");
             const sex = (radio_sex.checked) ? "kvinne" : "mann";
 
-            CSV_data += `${tester_ID};${sex};${age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}\n`;
+            CSV_data += `${tester_ID};${sex};${age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}%0D%0A`;
         }
 
         return CSV_data;
@@ -50,11 +51,13 @@ const science_state = {
 
         html += '</div>\n';
 
+        html += '<a id="stat-btn-email"><img src="images/btn-email.png"></img></a>\n';
         html += '<input id="stat-btn-back" type="image" src="images/btn-back.png"></input>\n';
         html += '<input id="stat-btn-reload" type="image" src="images/btn-reload.png"></input>\n';
 
         this.ui.innerHTML = html;
         this.container.appendChild(this.ui);
+        this.email_link = document.querySelector("#stat-btn-email");
 
         document.querySelector("#stat-btn-back").addEventListener("click", () => {
             this.ui.remove();
@@ -79,6 +82,11 @@ const science_state = {
 
         this.ui.style.width = `${rect.width}px`;
         this.ui.style.height = `${rect.height}px`;
+
+        // FIXME(istarnion): Now we're setting the target of the link every frame.
+        // That's like, super bad
+        const mailto_string = `mailto:${target_email}?subject=Lyders%20Lyder%20resultat&body=${this.get_csv()}`;
+        this.email_link.href = mailto_string;
     }
 };
 

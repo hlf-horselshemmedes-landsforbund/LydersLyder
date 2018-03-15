@@ -143,6 +143,20 @@ body {
     top: 16px;
 }
 
+#stat-btn-email {
+    position: absolute;
+    width: 25%;
+    right: 16px;
+    bottom: 30%;
+}
+
+#stat-btn-email > img {
+    position: absolute;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
 #stat-btn-back {
     position: absolute;
     width: 25%;
