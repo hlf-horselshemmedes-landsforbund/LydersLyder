@@ -126,6 +126,9 @@ function get_volume_from_SNR(snr) {
 const game_state = {
     target_word: "",
     create: function() {
+
+        game_log.length = 0; // Clear the game log
+
         const storage = window.localStorage;
         tester_ID = storage.getItem('last-id');
         if(tester_ID !== null) {

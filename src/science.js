@@ -5,16 +5,19 @@ const science_state = {
     email_link: null,
     get_csv: function() {
         let CSV_data = ""; // We will add to this string to send to server/mail whatever
+
+        const input_id = document.querySelector("#stat-input-id");
+        const id = input_id.value;
+
+        const input_age = document.querySelector("#stat-input-age");
+        const age = input_age.value;
+
+        const radio_sex = document.querySelector("#stat-input-sex-f");
+        const sex = (radio_sex.checked) ? "kvinne" : "mann";
+
         for(let i=0; i<game_log.length; ++i) {
             const log = game_log[i];
-
-            const input_age = document.querySelector("#stat-input-age");
-            const age = input_age.value;
-
-            const radio_sex = document.querySelector("#stat-input-sex-f");
-            const sex = (radio_sex.checked) ? "kvinne" : "mann";
-
-            CSV_data += `${tester_ID};${sex};${age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}%0D%0A`;
+            CSV_data += `${id};${sex};${age};${final_score.toFixed(2)};${i+1};${log.target};${log.SNR.toFixed(2)};${log.result};${log.time}%0D%0A`;
         }
 
         return CSV_data;
