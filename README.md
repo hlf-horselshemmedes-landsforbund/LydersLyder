@@ -1,14 +1,15 @@
 # Lyders Lyder - Sintef SPA
 
 Ikke alt trenger å ligge på webserver. Kun:
-index.html, style.css, dist/, images/, og audio/
+index.html, style.css, dist/, images/, /fonts, og audio/
 
 dist/spa.js genereres av make. Bare kjør `make`. Jeg har installert `watch` kommandoen, (som er installert by default på Linux) og kjører `watch make` for å bygge dist/spa.js hvert andre sekund. Det finnes andre måter å gjøre dette på også, slik at man slipper å kjøre `make` selv hver gang man gjør en endring.
 
 Makefile inneholder en liste av alle filer som dras inn, så det er bare å endre den for å legge til/ta bort filer fra et build.
 
 Makefile kjører uglify.js som jeg har installert med NPM. Kan sikkert også installeres på annet vis. Se https://github.com/mishoo/UglifyJS
-Med NPM installerer du uglify med `npm install uglify-js`
+Med NPM installerer du uglify med `sudo npm install uglify-es -g`
+
 
 Uglify er eneste dependency som må installeres, men vi bruker også to rammeverk: Phaser og Howler.js. Phaser er et veldig populært spillrammeverk, og håndterer tweening, grafikk, animasjoner og input. Howler.js er et audio API som gjør det lettere å ha god kontroll uten å miste browser support. Phaser har også et audio API, men Howler er bedre (mer kontroll)
 
@@ -26,3 +27,11 @@ src/animation.js    - 'klasse' for å holde animasjonsdata
 src/animator.js     - Kode for å spille av sceneanimasjonene
 src/utils.js        - Funksjoner for operasjoner vi trenger over alt rundt om i koden.
 
+**Overlevering**
+Det som trengs ved overlevering er:
+- audio- dist- fonts- images- index.html- style.css
+
+Disse legges på web server.
+
+Disse filene trenger ikke med:
+MakefileNOTES.mdREADME.mdsrcatlas.tps

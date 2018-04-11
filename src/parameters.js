@@ -1,5 +1,4 @@
 // Many of these are let, not const, so we can set them in-game from the console
-
 let INITIAL_SNR = -6;
 let STEP_SNR = 2;
 let MIN_SNR = -40;
