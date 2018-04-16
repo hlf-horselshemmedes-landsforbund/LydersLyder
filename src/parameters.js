@@ -1,4 +1,5 @@
 // Many of these are let, not const, so we can set them in-game from the console
+const version_text = "v0.18";
 let INITIAL_SNR = -6;
 let STEP_SNR = 2;
 let MIN_SNR = -40;
@@ -28,4 +29,3 @@ const result_text_below_threshold = "Resultatet viser ingen tegn på nedsatt hø
 const result_text_above_threshold = "Resultatet kan bety at barnet hører dårlig.\nVi anbefaler at du tar kontakt med fastlegen for en vurdering og mulig henvisning til spesialist.\nHvis du er usikker, kan du la barnet prøve spillet en gang til.";
 
 const result_text_contact = "\n\nSpørsmål om hørsel? Ta kontakt!\nhlf@hlf.no\n22 63 99 00";
-
