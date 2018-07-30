@@ -23,7 +23,7 @@ share:
 
 # clean up make files
 clean:
-	rm -f $(OUTPUDIR) $(SHAREDIR)
+	rm -rf $(OUTPUDIR) $(SHAREDIR)
 
 optimize:
 	cp -R images images_optimized
