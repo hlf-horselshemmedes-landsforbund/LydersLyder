@@ -19,6 +19,8 @@ function left_pad_string(str, wanted_length, symbol = '0') {
 }
 
 function map_range(x, in_min, in_max, out_min, out_max) {
+    if(x < in_min)      x = in_min;
+    else if(x > in_max) x = in_max;
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 

@@ -11,8 +11,7 @@ window.onload = () => {
 const audio_clips = {};
 
 function load_image(img, ext = 'png') {
-    game.load.image(img, `images/${img}.${ext}`);
-}
+    game.load.image(img, `images/${img}.${ext}`); }
 
 function load_audio(name, file, loop = false) {
     const sound = new Howl({
@@ -97,7 +96,8 @@ const loading_state = {
         game.state.add('game', game_state);
         game.state.add('end', end_state);
         game.state.add('parent', parent_state);
-        game.state.add('science', science_state);
+        // NOTE(istarnion): Uncomment to enable the 'science' view. Also edit end.js and the Makefile
+        // game.state.add('science', science_state);
     },
     create: function() {
         game.state.start('menu');

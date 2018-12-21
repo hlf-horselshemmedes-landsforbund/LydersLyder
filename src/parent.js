@@ -3,41 +3,11 @@ const parent_state = {
         game.add.image(game.world.centerX - 999 / 2, 32, 'sprites', 'result-bar');
 
         const worst_possible_result = (function() {
-            const results = [];
-            let curr = INITIAL_SNR;
-            for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
-                results.push(curr);
-                curr += STEP_SNR;
-                if(curr > MAX_SNR) curr = MAX_SNR;
-            }
-
-            let result = 0;
-            for(let i=0; i<results_to_count_for_final_score; ++i) {
-                result += results[results.length - (i+1)];
-            }
-
-            result /= results_to_count_for_final_score;
-
-            return result;
+            return 10;
         })();
 
         const best_possible_result = (function() {
-            const results = [];
-            let curr = INITIAL_SNR;
-            for(let i=0; i<SEQUENCE_LENGTH+1; ++i) {
-                results.push(curr);
-                curr -= STEP_SNR;
-                if(curr < MIN_SNR) curr = MIN_SNR;
-            }
-
-            let result = 0;
-            for(let i=0; i<results_to_count_for_final_score; ++i) {
-                result += results[results.length - (i+1)];
-            }
-
-            result /= results_to_count_for_final_score;
-
-            return result;
+            return -20
         })();
 
         if(!final_score) final_score = 0;
@@ -75,6 +45,7 @@ const parent_state = {
         text += result_text_contact
 
         game.add.text(140, 256, text, main_style);
+        game.add.text(x, 8, (-final_score+SNR_threshold) | 0, main_style); // OR 0 forces number to int
 
         const back_button =
             add_button(game.world.centerX - 325, game.height - 128, 'btn-back');

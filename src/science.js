@@ -28,28 +28,29 @@ const science_state = {
 
         this.ui = document.createElement("div");
         this.ui.classList.add("game-ui");
+        this.ui.classList.add("stat-text");
 
         let html = '<div id="stat-info">\n';
 
-        html += `<span class="stat-target">RESULT:</span><span class="stat-snr">SNR: ${final_score.toFixed(2)}</span><br/>\n`;
+        html += `<span class="stat-text stat-target">RESULT:</span><span class="stat-snr">SNR: ${final_score.toFixed(2)}</span><br/>\n`;
         for(let i=0; i<game_log.length; ++i) {
             const log = game_log[i];
-            html += `<span class="stat-target">${i+1}. ${log.target}</span><span class="stat-snr">SNR: ${log.SNR.toFixed(2)}</span><span class="stat-result">Svar: ${log.result}</span><span class="stat-time">Tid: ${log.time}s</span><br/>\n`;
+            html += `<span class="stat-text stat-target">${i+1}. ${log.target}</span><span class="stat-snr">SNR: ${log.SNR.toFixed(2)}</span><span class="stat-text stat-result">Svar: ${log.result}</span><span class="stat-text stat-time">Tid: ${log.time}s</span><br/>\n`;
         }
 
         html += '</div>\n';
 
-        html += '<div id="stat-input">\n';
+        html += '<div id="stat-input" class="stat-text">\n';
 
-        html += '<label for="stat-input-id">ID:</label>\n<br/>\n';
+        html += '<label for="stat-input-id" class="stat-text>ID:</label>\n<br/>\n';
         html += `<input id="stat-input-id" type="number" value="${tester_ID}"></input>\n<br/>\n`;
 
-        html += '<label for="stat-input-age">Alder:</label>\n<br/>\n';
+        html += '<label for="stat-input-age" class="stat-text>Alder:</label>\n<br/>\n';
         html += '<input id="stat-input-age" type="number" value="0"></input>\n<br/>\n';
 
-        html += '<label for="stat-input-sex-f">Kvinne:</label>\n';
+        html += '<label for="stat-input-sex-f" class="stat-text>Kvinne:</label>\n';
         html += '<input id="stat-input-sex-f" type="radio" name="stat-sex"checked></input>\n<br/>\n';
-        html += '<label for="stat-input-sex-m">Mann:</label>\n';
+        html += '<label for="stat-input-sex-m" class="stat-text>Mann:</label>\n';
         html += '<input id="stat-input-sex-m" type="radio" name="stat-sex"></input>\n';
 
         html += '</div>\n';

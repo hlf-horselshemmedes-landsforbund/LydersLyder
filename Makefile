@@ -4,7 +4,9 @@ SHAREDIR = share
 SHAREFILES = audio/ dist/ fonts/ images/ index.html style.css
 SHAREFILE = spa_final
 OUTPUT = spa.js
-SOURCES = src/phaser.js src/howler.min.js src/parameters.js src/utils.js src/animation.js src/animator.js src/menu.js src/game_items.js src/game.js src/end.js src/parent.js src/science.js src/app.js
+
+# To enable the 'science' view, add src/science.js _before_ src/app.js. Also uncomment the sections in app.js and end.js as noted in those files
+SOURCES = src/phaser.js src/howler.min.js src/parameters.js src/utils.js src/animation.js src/animator.js src/menu.js src/game_items.js src/game.js src/end.js src/parent.js src/app.js
 OPTIONS =
 DATETIME = $(shell date +%Y%m%d_%H%M%S)# or whatever pattern you desire
 #DATETIME = $(date +%Y%m%d_%H%M%S) # or whatever pattern you desire

@@ -21,19 +21,24 @@ const end_state = {
 
         text.setTextBounds(0, 0, game.width, game.height);
 
+        // If enabling the science page, move this button to centerX-325
         const parent_button =
-            add_button(game.world.centerX - 325, game.height - 128, 'btn-results');
-
-        const science_button =
-            add_button(game.world.centerX + 16, game.height - 128, 'btn-science');
+            add_button(game.world.centerX - 155, game.height - 128, 'btn-results');
 
         parent_button.onInputUp.add(() => {
             game.state.start('parent');
         });
 
+        // NOTE(istarnion): Uncomment to enable the 'science' view. Also edit app.js and the Makefile
+        /*
+        const science_button =
+            add_button(game.world.centerX + 16, game.height - 128, 'btn-science');
+
+
         science_button.onInputUp.add(() => {
             game.state.start('science');
         });
+        */
     }
 };
 
