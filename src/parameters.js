@@ -28,4 +28,4 @@ const result_text_below_threshold = "Resultatet viser ingen tegn på nedsatt hø
 
 const result_text_above_threshold = "Resultatet kan bety at barnet hører dårlig.\nPrøv testen en gang til. Ved gjentatte dårlige svar anbefaler vi at du tar kontakt med fastlege/helsestasjon for en mer presis veiledning.";
 
-const result_text_contact = "\n\nSpørsmål om hørsel? Ta kontakt!\nhlf@hlf.no\n22 63 99 00";
+const result_text_contact = "\n\nInformasjonsmateriell om hørsel og oppvekst finnes på HLFs hjemmesider:\nhttps://www.hlf.no/";

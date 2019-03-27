@@ -29,6 +29,7 @@ const loading_state = {
         const load_bar_fill = game.add.sprite(game.world.centerX - 515 / 2, game.world.centerY - 47 / 2, 'prog-bar-fill');
 
         game.load.setPreloadSprite(load_bar_fill);
+        game.add.image(game.world.centerX-305, game.height-130, 'LYDERSLYDER-merking');
 
         load_image('bg-light');
         load_image('version_img');
@@ -99,6 +100,7 @@ const loading_state = {
         // NOTE(istarnion): Uncomment to enable the 'science' view. Also edit end.js and the Makefile
         // game.state.add('science', science_state);
     },
+
     create: function() {
         game.state.start('menu');
     }
@@ -112,6 +114,7 @@ function preload() {
     game.stage.backgroundColor = "#FFF";
     game.stage.disableVisibilityChange = true;
 
+    load_image('LYDERSLYDER-merking');
     load_image('prog-bar-outline');
     load_image('prog-bar-fill');
 
